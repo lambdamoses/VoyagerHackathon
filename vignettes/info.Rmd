@@ -41,7 +41,7 @@ The freely available resources listed below are helpful for understanding the wo
 * [R for Data Science](https://r4ds.hadley.nz/): Intro to data wrangling and visualization with the Tidyverse. Only the visualization and regular expression parts are relevant to this workshop and hackathon. Please read if you haven't used `ggplot2` before.
 * [Geocomputation with R](https://r.geocompx.org/): Geospatial tools used to represent and operate on geometries and raster images in SFE.
 
-See the [R package dev workshop page](https://lambdamoses.github.io/VoyagerHackathon/articles/package.html) for prerequisites and system setup for the hackathon. Please do the system setup described there before the R package dev workshop for a hands on experience.
+See the [R package dev workshop page](https://pachterlab.github.io/VoyagerHackathon/articles/package.html) for prerequisites and system setup for the hackathon. Please do the system setup described there before the R package dev workshop for a hands on experience.
 
 ## Workshop goals and objectives
 * Learn about technologies to collect spatial -omics data, with a focus on transcriptomics
@@ -81,6 +81,9 @@ The required packages of the appropriate version as of July 2023 have been
 pre-installed on the Workshop Galaxy and in the Docker image.
 
 ## Location
+
+In solidarity against occupation, colonization and the injustices inflicted on the First Nations, I acknowledge that this is the unceded territory of the Tongva/Kizh people who called this territory [Tonvaangar](https://tongva.land/). Caltech is near the village of Tobpet. Today, Tovaangar/much of the LA-OC-IE metropolitan area is still the home to many Indigenous people from across Turtle Island and we are grateful to have the opportunity to live and do research on this territory. Recognizing whose land we are on is a start but we cannot stop there. There can be no reconciliation without conciliation and there can be no conciliation without reparations. Those here who are not First Nations, must remember that they/we are guests on this land and need to be better guests. (Abridged from el-Tawhid Juma Circle)
+
 The workshop and hackathon is located at Morgan Library on the second floor of the Kerckhoff building at Caltech. See map:
 
 ```{r}
@@ -93,9 +96,10 @@ On this map, accessible entrance is marked in pink, the north entrance of the No
 knitr::include_graphics("https://kckarchitects.com/wp-content/uploads/2015/02/IMG_5794_hero.JPG.jpg")
 ```
 
-<br/>
 
-This library is named after geneticist Thomas Hunt Morgan, a father of modern genetics who mapped _Drosophila_ genes on chromosomes in the Fly Room at Columbia in the 1920s before moving here to Caltech (I said "a" instead of "the" because the lone genius myth is false and dangerous). You can find schematics of historical _Drosophila_ genetic mapping on chromosomes on the 3rd floor of this building in the corridor connecting Kerckhoff to Church. Comprehensive mapping of the gene regulation network in sea urchin development was also performed in this building by [Eric H. Davidson lab](https://www.bbe.caltech.edu/people/eric-h-davidson); some sea urchin images can be seen in the corridors of this building. There are more labs at Caltech studying unique model organisms, in jellyfish, squid, and rove beetles besides the sea urchin. I had the honor to take a molecular biology lab course on sea urchin development with Eric's student Peiyun Lee at UCLA when I was an undergrad (whole mount in situ hybridization in sea urchin embryos). We are part of a glorious tradition and this workshop extends this tradition to the future. 
+This library is named after geneticist Thomas Hunt Morgan, a father of modern genetics who mapped _Drosophila_ genes on chromosomes in the Fly Room at Columbia in the 1920s before moving here to Caltech (I said "a" instead of "the" because the lone genius myth is false and dangerous). You can find schematics of historical _Drosophila_ genetic mapping on chromosomes on the 3rd floor of this building in the corridor connecting Kerckhoff to Church. 
+
+Comprehensive mapping of the gene regulation network in sea urchin development was also performed in this building by [Eric H. Davidson lab](https://www.bbe.caltech.edu/people/eric-h-davidson); some sea urchin images can be seen in the corridors of this building. There are more labs at Caltech studying unique model organisms, in jellyfish, squid, and rove beetles besides the sea urchin. I had the honor to take a molecular biology lab course on sea urchin development with Eric's student Peiyun Lee at UCLA when I was an undergrad (whole mount in situ hybridization in sea urchin embryos). We are part of a glorious tradition and this workshop extends this tradition to the future. 
 
 Meanwhile, Caltech did not admit female students when this building was built (1928), so initially there was no women's restroom. The restroom on the second floor has been converted to women's restroom with a bizarre structure. Men's restrooms are on the 1st and 3rd floors and in the Church building. Our lab (Pachter Lab) used to be in the basement of this building, taking the sea urchin lab space after Eric passed away. We moved to the Chen building in 2021; the former Kerckhoff space is still empty.
 

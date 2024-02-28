@@ -47,7 +47,7 @@ Suggests:
     tibble,
     tidyr,
     Voyager
-URL: https://lambdamoses.github.io/VoyagerHackathon/
-BugReports: https://github.com/lambdamoses/VoyagerHackathon/issues/new/choose
+URL: https://pachterlab.github.io/VoyagerHackathon/
+BugReports: https://github.com/pachterlab/VoyagerHackathon/issues/new/choose
 VignetteBuilder: knitr
 DockerImage: ghcr.io/lambdamoses/voyagerhackathon:latest

@@ -30,7 +30,7 @@ knitr::opts_chunk$set(
 ```
 
 # Introduction
-Introduction slides are available [here](https://github.com/lambdamoses/VoyagerWorkshop/blob/devel/vignettes/Bioc2023%20slides.pdf). The rendered version of this workshop is available [here](https://lambdamoses.github.io/VoyagerWorkshop/articles/workshop.html). The following R packages are used in this workshop, which are all on CRAN or Bioconductor. Bioconductor 3.17 is used in the workshop presented at Bioc2023.
+Introduction slides are available [here](https://github.com/lambdamoses/VoyagerWorkshop/blob/devel/vignettes/Bioc2023%20slides.pdf). The rendered version of this workshop is available [here](https://pachterlab.github.io/VoyagerHackathon/articles/voyager.html). The following R packages are used in this workshop, which are all on CRAN or Bioconductor. Bioconductor 3.19 (devel) is used in the workshop.
 ```{r, message=FALSE}
 library(SpatialFeatureExperiment)
 library(SingleCellExperiment)
