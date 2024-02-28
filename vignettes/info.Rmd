@@ -20,7 +20,8 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  echo = FALSE
 )
 ```
 
@@ -81,7 +82,7 @@ The required packages of the appropriate version as of July 2023 have been
 pre-installed on the Workshop Galaxy and in the Docker image.
 
 ## Location
-The workshop and hackathon is located at Morgan Library on the second floor of the Kerckhoff building at Caltech. See map (click link for interactive map):
+The workshop and hackathon is located at Morgan Library on the second floor of the Kerckhoff building at Caltech. See map:
 
 ```{r}
 knitr::include_url("https://umap.openstreetmap.fr/en/map/accessible-entrance_1030625")
@@ -89,7 +90,9 @@ knitr::include_url("https://umap.openstreetmap.fr/en/map/accessible-entrance_103
 
 On this map, accessible entrance is marked in pink, the north entrance of the Norman W. Church Laboratory which is connected to the Kerckhoff building. The elevator is marked in orange: go down the corridor after entering from Church and make a slight right. Then after coming out of the elevator, make a left and the Morgan Library (marked in red box) will be on the left, with heavy glass doors.
 
-![Inside Morgan Library](https://kckarchitects.com/wp-content/uploads/2015/02/IMG_5794_hero.JPG.jpg)
+![Inside Morgan Library](https://kckarchitects.com/wp-content/uploads/2015/02/IMG_5794_hero.JPG.jpg){width=80%}
+
+<br/>
 
 This library is named after geneticist Thomas Hunt Morgan, a father of modern genetics who mapped _Drosophila_ genes on chromosomes in the Fly Room at Columbia in the 1920s before moving here to Caltech (I said "a" instead of "the" because the lone genius myth is false and dangerous). You can find schematics of historical _Drosophila_ genetic mapping on chromosomes on the 3rd floor of this building in the corridor connecting Kerckhoff to Church. Comprehensive mapping of the gene regulation network in sea urchin development was also performed in this building by [Eric H. Davidson lab](https://www.bbe.caltech.edu/people/eric-h-davidson); some sea urchin images can be seen in the corridors of this building. There are more labs at Caltech studying unique model organisms, in jellyfish, squid, and rove beetles besides the sea urchin. I had the honor to take a molecular biology lab course on sea urchin development with Eric's student Peiyun Lee at UCLA when I was an undergrad (whole mount in situ hybridization in sea urchin embryos). We are part of a glorious tradition and this workshop extends this tradition to the future. 
 
@@ -97,17 +100,17 @@ Meanwhile, Caltech did not admit female students when this building was built (1
 
 ## Schedule
 
-March 4:
+### Workshop on March 4
 
 | Time | Item |
 |------|------|
 | 9:30 - 10 am | Breakfast and check in|
 | 10 - 10:30 am | Intros and icebreaker |
-| 10:30 - 11:30 am | Intro to spatial -omics technologies |
+| 10:30 - 11 am | Intro to spatial -omics technologies |
+| 11 - 11:30 am | Intro to spatial -omics data analysis |
 | 11:30 - 11:45 am | Break |
-| 11:45 am - 12 pm | Overview of spatial data analysis methods |
-| 12 pm - 1 pm | `SpatialFeatureExperiment` workshop |
-| 1 - 1:45 pm | Lunch break, food provided |
+| 11:45 am - 12:45 pm | `SpatialFeatureExperiment` workshop |
+| 12:45 - 1:45 pm | Lunch break, food provided |
 | 1:45 - 3 pm | `Voyager` workshop |
 | 3 - 3:15 pm | Break |
 | 3:15 - 4:30 pm | `Voyager` workshop |
@@ -117,7 +120,8 @@ March 4:
 
 If you're already hungry, then we can walk over to S Lake Ave for dinner before the walking tour to Old Pasadena (about 40 minutes walk from Caltech) passing through the Playhouse District. If you're not hungry yet, then we can walk to Old Pasadena and have dinner there.
 
-March 5-8: Morgan Library is reserved from 9:30 am to 6 pm every day. You don't have to be here all the time; the special thing about this place is the awesome historical atmosphere and that the current Voyager crew are here to answer questions and help you. And you can make new friends. Cool fact: We have a copy of the first issue of Nature here. I can pull it out to show you.
+### Hackathon on March 5-8
+Morgan Library is reserved from 9:30 am to 6 pm every day. You don't have to be here all the time; the special thing about this place is the awesome historical atmosphere and that the current Voyager crew are here to answer questions and help you. And you can make new friends. Cool fact: We have a copy of the first issue of Nature here. I can pull it out to show you.
 
 March 5 at 1 pm: Campus tour during lunch break
 
