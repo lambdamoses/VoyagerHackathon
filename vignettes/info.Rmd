@@ -25,10 +25,9 @@ knitr::opts_chunk$set(
 )
 ```
 
-## Workshop info
 Unlike in the workshop at the Bioconductor conference, the `devel` version of SFE and Voyager are used in the workshop and hackathon. This is the unstable version where new features are introduced prior to release.
 
-### Prerequisites
+## Prerequisites
 To understand the workshop material, you are expected to be familiar with:
 
 * Vector, matrix, data frame, and list construction and operations in R
@@ -44,13 +43,13 @@ The freely available resources listed below are helpful for understanding the wo
 
 See the [R package dev workshop page](https://lambdamoses.github.io/VoyagerHackathon/articles/package.html) for prerequisites and system setup for the hackathon. Please do the system setup described there before the R package dev workshop for a hands on experience.
 
-### Workshop goals and objectives
+## Workshop goals and objectives
 * Learn about technologies to collect spatial -omics data, with a focus on transcriptomics
 * Experience exploratory data analysis with the spatial information front and center
 * Get a taste of the geospatial tradition
 * Learn to develop R packages for Bioconductor
 
-#### What you will learn
+### What you will learn
 * Use and operate on SFE objects
 * Spatial data visualization
 * Geometric operations
@@ -61,12 +60,12 @@ See the [R package dev workshop page](https://lambdamoses.github.io/VoyagerHacka
 * Write, document, and test R packages
 * Git version control and collaborative development
 
-#### What you will _not_ learn
+### What you will _not_ learn
 * Data integration across multiple samples
 * Spatial multi -omics, although a Voyager vignette on this is forthcoming
 * The Python implementation of `Voyager`
 
-### To use the Docker image
+## To use the Docker image
 
 This workshop can be run remotely on our server (URL will be emailed to you and will be destroyed on March 9 for security reasons). Alternatively, it can be run
 locally with the Docker image:
