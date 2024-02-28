@@ -135,13 +135,13 @@ knitr::include_url("https://umap.openstreetmap.fr/en/map/vegan-and-halal-restaur
 If you want to wander around LA, I also have my LA food hall of fame in the map below, which also includes ice cream shops (pink) and cafes (brown), click on the points for description. The bar to enter the hall of fame is much higher than that for the previous map. If anything, I can't recommend Villa's Tacos in Highland Park (5455 N Figueroa St) more than enough.
 
 ```{r}
-knitr::include_url("http://u.osmfr.org/m/993061/")
+knitr::include_url("https://umap.openstreetmap.fr/en/map/la-paris_993061")
 ```
 
 ## LA guide
 For those from out of town and wonder where to visit after the hackathon: The map below shows places I like in LA, mostly nooks and crannies off the beaten track, but this is obviously biased by the kinds of things I like, such as wilderness, historical buildings, murals, gardens, public art, and art galleries. There are many worlds in LA outside Hollywood. Yes, I biked to all these places, typically from either Pasadena or Westwood. This is part of the back story behind "from geospatial to spatial -omics", and I can tell you more of it during breaks.
 
 ```{r}
-knitr::include_url("http://u.osmfr.org/m/996975/")
+knitr::include_url("https://umap.openstreetmap.fr/en/map/hall-of-fame_996975")
 ```
 
