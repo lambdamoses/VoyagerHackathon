@@ -1,0 +1,144 @@
+---
+title: "Event info"
+author:
+    - name: "Lambda Moses"
+      email: "dlu2@caltech.edu"
+date: "`r Sys.Date()`"
+output: 
+    BiocStyle::html_document:
+        toc: true
+        number_sections: true
+        toc_depth: 3
+        toc_float:
+            collapsed: true
+vignette: >
+  %\VignetteIndexEntry{info}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  include = FALSE
+)
+```
+
+## Workshop info
+Unlike in the workshop at the Bioconductor conference, the `devel` version of SFE and Voyager are used in the workshop and hackathon. This is the unstable version where new features are introduced prior to release.
+
+### Prerequisites
+To understand the workshop material, you are expected to be familiar with:
+
+* Vector, matrix, data frame, and list construction and operations in R
+* Data visualization with the `ggplot2` package
+* Statistics and linear algebra, including principal component analysis (PCA)
+
+The workshop material is either taken from the documentation websites of [`Voyager`](https://pachterlab.github.io/voyager/) and [`SpatialFeatureExperiment`](https://pachterlab.github.io/SpatialFeatureExperiment/) or will soon become part of those websites. Relevant vignettes will be linked to in the relevant sections.
+
+The freely available resources listed below are helpful for understanding the workshop; we strongly recommend you to consult them if you are unfamiliar with the topic of interest:
+
+* [R for Data Science](https://r4ds.hadley.nz/): Intro to data wrangling and visualization with the Tidyverse. Only the visualization and regular expression parts are relevant to this workshop and hackathon. Please read if you haven't used `ggplot2` before.
+* [Geocomputation with R](https://r.geocompx.org/): Geospatial tools used to represent and operate on geometries and raster images in SFE.
+
+See the [R package dev workshop page](https://lambdamoses.github.io/VoyagerHackathon/articles/package.html) for prerequisites and system setup for the hackathon. Please do the system setup described there before the R package dev workshop for a hands on experience.
+
+### Workshop goals and objectives
+* Learn about technologies to collect spatial -omics data, with a focus on transcriptomics
+* Experience exploratory data analysis with the spatial information front and center
+* Get a taste of the geospatial tradition
+* Learn to develop R packages for Bioconductor
+
+#### What you will learn
+* Use and operate on SFE objects
+* Spatial data visualization
+* Geometric operations
+* Create spatial neighborhood graphs
+* Run spatial analyses on different fields of SFE objects
+* Visualize spatial analysis results
+* Math of some commonly used ESDA methods
+* Write, document, and test R packages
+* Git version control and collaborative development
+
+#### What you will _not_ learn
+* Data integration across multiple samples
+* Spatial multi -omics, although a Voyager vignette on this is forthcoming
+* The Python implementation of `Voyager`
+
+### To use the Docker image
+
+This workshop can be run remotely on our server (URL will be emailed to you and will be destroyed on March 9 for security reasons). Alternatively, it can be run
+locally with the Docker image:
+
+```sh
+# Not working yet as of Fed 27
+docker run -e PASSWORD=<choose_a_password_for_rstudio> -p 8787:8787 ghcr.io/lambdamoses/voyagerhackathon
+```
+
+Once running, navigate to http://localhost:8787/ and then log in with `rstudio`:`yourchosenpassword`. 
+
+The required packages of the appropriate version as of July 2023 have been
+pre-installed on the Workshop Galaxy and in the Docker image.
+
+## Location
+The workshop and hackathon is located at Morgan Library on the second floor of the Kerckhoff building at Caltech. See map (click link for interactive map):
+
+```{r}
+knitr::include_url("https://umap.openstreetmap.fr/en/map/accessible-entrance_1030625")
+```
+
+On this map, accessible entrance is marked in pink, the north entrance of the Norman W. Church Laboratory which is connected to the Kerckhoff building. The elevator is marked in orange: go down the corridor after entering from Church and make a slight right. Then after coming out of the elevator, make a left and the Morgan Library (marked in red box) will be on the left, with heavy glass doors.
+
+![Inside Morgan Library](https://kckarchitects.com/wp-content/uploads/2015/02/IMG_5794_hero.JPG.jpg)
+
+This library is named after geneticist Thomas Hunt Morgan, a father of modern genetics who mapped _Drosophila_ genes on chromosomes in the Fly Room at Columbia in the 1920s before moving here to Caltech (I said "a" instead of "the" because the lone genius myth is false and dangerous). You can find schematics of historical _Drosophila_ genetic mapping on chromosomes on the 3rd floor of this building in the corridor connecting Kerckhoff to Church. Comprehensive mapping of the gene regulation network in sea urchin development was also performed in this building by [Eric H. Davidson lab](https://www.bbe.caltech.edu/people/eric-h-davidson); some sea urchin images can be seen in the corridors of this building. There are more labs at Caltech studying unique model organisms, in jellyfish, squid, and rove beetles besides the sea urchin. I had the honor to take a molecular biology lab course on sea urchin development with Eric's student Peiyun Lee at UCLA when I was an undergrad (whole mount in situ hybridization in sea urchin embryos). We are part of a glorious tradition and this workshop extends this tradition to the future. 
+
+Meanwhile, Caltech did not admit female students when this building was built (1928), so initially there was no women's restroom. The restroom on the second floor has been converted to women's restroom with a bizarre structure. Men's restrooms are on the 1st and 3rd floors and in the Church building. Our lab (Pachter Lab) used to be in the basement of this building, taking the sea urchin lab space after Eric passed away. We moved to the Chen building in 2021; the former Kerckhoff space is still empty.
+
+## Schedule
+
+March 4:
+
+| Time | Item |
+|------|------|
+| 9:30 - 10 am | Breakfast and check in|
+| 10 - 10:30 am | Intros and icebreaker |
+| 10:30 - 11:30 am | Intro to spatial -omics technologies |
+| 11:30 - 11:45 am | Break |
+| 11:45 am - 12 pm | Overview of spatial data analysis methods |
+| 12 pm - 1 pm | `SpatialFeatureExperiment` workshop |
+| 1 - 1:45 pm | Lunch break, food provided |
+| 1:45 - 3 pm | `Voyager` workshop |
+| 3 - 3:15 pm | Break |
+| 3:15 - 4:30 pm | `Voyager` workshop |
+| 4:30 - 4:45 pm | Break |
+| 4:45 to 6 pm | R package development workshop |
+| 6 pm | Pasadena walking tour and dinner |
+
+If you're already hungry, then we can walk over to S Lake Ave for dinner before the walking tour to Old Pasadena (about 40 minutes walk from Caltech) passing through the Playhouse District. If you're not hungry yet, then we can walk to Old Pasadena and have dinner there.
+
+March 5-8: Morgan Library is reserved from 9:30 am to 6 pm every day. You don't have to be here all the time; the special thing about this place is the awesome historical atmosphere and that the current Voyager crew are here to answer questions and help you. And you can make new friends. Cool fact: We have a copy of the first issue of Nature here. I can pull it out to show you.
+
+March 5 at 1 pm: Campus tour during lunch break
+
+## Food
+I deeply apologize that we only have the funding to provide food on March 4, but I'll bring snacks every day. You can get all three meals on campus at Red Door Cafe and Browne (main dining hall) on campus (no meal plan required). There are also numerous restaurants and cafes on S Lake Ave west of campus a few minutes walk away. This map shows restaurants with decent vegan options (lighter green though you might need to ask if the tahini in falafel wraps has yogurt in it) and halal restaurants (darker green) that I like in central Pasadena (red box indicates Morgan Library), click on the points for description: Also, all maps here show bike paths and bike lanes.
+
+```{r}
+knitr::include_url("https://umap.openstreetmap.fr/en/map/vegan-and-halal-restaurants_1030624")
+```
+
+If you want to wander around LA, I also have my LA food hall of fame in the map below, which also includes ice cream shops (pink) and cafes (brown), click on the points for description. The bar to enter the hall of fame is much higher than that for the previous map. If anything, I can't recommend Villa's Tacos in Highland Park (5455 N Figueroa St) more than enough.
+
+```{r}
+knitr::include_url("http://u.osmfr.org/m/993061/")
+```
+
+## LA guide
+For those from out of town and wonder where to visit after the hackathon: The map below shows places I like in LA, mostly nooks and crannies off the beaten track, but this is obviously biased by the kinds of things I like, such as wilderness, historical buildings, murals, gardens, public art, and art galleries. There are many worlds in LA outside Hollywood. Yes, I biked to all these places, typically from either Pasadena or Westwood. This is part of the back story behind "from geospatial to spatial -omics", and I can tell you more of it during breaks.
+
+```{r}
+knitr::include_url("http://u.osmfr.org/m/996975/")
+```
+

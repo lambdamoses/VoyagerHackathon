@@ -1,52 +1,14 @@
-# BuildABiocWorkshop
+<br/>
 
-This package is a template for building a Bioconductor workshop. The package
-includes Github actions to:
+<img src="https://github.com/pachterlab/voyager/raw/documentation/vignettes/voyager.jpg" width="1024"/>
 
-1. Set up bioconductor/bioconductor_docker:devel on Github resources
-2. Install package dependencies for your package (based on the `DESCRIPTION` file)
-3. Run `rcmdcheck::rcmdcheck`
-4. Build a pkgdown website and push it to github pages
-5. Build a docker image with the installed package and dependencies and deploy to [the Github Container Repository](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-container-registry#pulling-container-images) at the name `ghcr.io/gihub_user/repo_name`, all lowercase. 
+## Overview
+This is the website for the spatial -omics Voyager workshop and hackathon at Caltech on March 4-8, 2024. Event info including schedule and workshop material can be found on this website.
 
-## Responsibilities
+### Description
 
-Package authors are primarily responsible for:
+Exploratory spatial data analysis (ESDA) can be a powerful approach to understanding single-cell genomics datasets, but it is not yet part of standard data analysis workflows. In particular, geospatial analyses, which have been developed and refined for decades, have yet to be fully adapted and applied to spatial single-cell analysis. We introduce the `Voyager` platform, which systematically brings the geospatial ESDA tradition to (spatial) -omics, with local, bivariate, and multivariate spatial methods not yet commonly applied to spatial -omics, united by a uniform user interface. Using `Voyager`, we showcase biological insights that can be derived with its methods, such as biologically relevant negative spatial autocorrelation. Underlying `Voyager` is the `SpatialFeatureExperiment` (SFE) data structure, which combines Simple Feature with `SingleCellExperiment` and `AnnData` to represent and operate on geometries bundled with gene expression data. Voyager has comprehensive tutorials demonstrating ESDA built on GitHub Actions to ensure reproducibility and scalability, using data from popular commercial technologies. Voyager is implemented in both R/Bioconductor and Python/PyPI, and features compatibility tests to ensure that both implementations return consistent results. 
 
-1. Creating a landing site of their choosing for their workshops (a website). This website should be listed in the `DESCRIPTION` file as the `URL`.
-2. Creating a docker image that will contain workshop materials and the installed packages necessary to run those materials. The name of the resulting docker image, including "tag" if desired, should be listed in a non-standard tag, `DockerImage:` in the `DESCRIPTION` file. 
+In the workshop on March 4, you will get hands on experiences on the R implementation of SFE and Voyager. First, you will learn to create and operate on SFE objects. Next you will perform various types of ESDA on an SFE object with Voyager, and learn the spatial statistics behind these methods. The workshop material points you to further reading on these methods. You can read more about Voyager in [this preprint](https://www.biorxiv.org/content/10.1101/2023.07.20.549945v1?ct=). You will also learn to write R packages and use `git` version control.
 
-Both of those tasks can be accomplished using the Github actions included in this template package. The vignette accompanying this package describes how to accomplish both of these tasks.
-
-## Details
-
-For detailed instructions, see the `How to build a workshop` article/vignette.
-
-## Results of successful deployment
-
-- A working docker image that contains the installed package and dependencies.
-- An up-to-date `pkgdown` website at https://YOURUSERNAME.github.io/YOURREPOSITORYNAME/
-- Docker image will be tagged with `latest`, `sha-XXXXXX` where `XXXXXX` is the hash of the current `master` commit, and `master`. 
-
-## To use the resulting image:
-
-```sh
-docker run -e PASSWORD=<choose_a_password_for_rstudio> -p 8787:8787 YOURDOCKERIMAGENAME
-```
-Once running, navigate to http://localhost:8787/ and then login with `rstudio`:`yourchosenpassword`. 
-
-To try with **this** repository docker image:
-
-```sh
-docker run -e PASSWORD=abc -p 8787:8787 ghcr.io/bioconductor/buildabiocworkshop
-```
-
-*NOTE*: Running docker that uses the password in plain text like above exposes the password to others 
-in a multi-user system (like a shared workstation or compute node). In practice, consider using an environment 
-variable instead of plain text to pass along passwords and other secrets in docker command lines. 
-
-
-## Whatcha get
-
-- https://bioconductor.github.io/BuildABiocWorkshop
-- A Docker image that you can run locally, in the cloud, or (usually) even as a singularity container on HPC systems. 
+In the hackathon on March 5-8, you will implement new features for SFE and Voyager as indicated in their GitHub repos and they are labeled with their difficulty. If you feel like all the issues are too challenging, you can bring your own spatial dataset for analysis. You may also open your own issues if you encounter bugs or want new features. Current Voyager crew (Lambda Moses and Alik Huseynov) will be here to answer questions. We will review your pull requests before late April for the Bioconductor 3.19 release. We plan to split up the Voyager preprint so there will be separate paper for SFE. Contributors will be added as coauthors of the relevant paper.

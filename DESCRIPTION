@@ -1,16 +1,18 @@
-Package: BuildABiocWorkshop
-Title: Bioconductor or R Workshop Template and Github Actions
-Version: 2.0.0
+Package: VoyagerHackathon
+Title: Voyager and SFE workshop and hackathon at Caltech
+Version: 1.0.0
 Authors@R: 
-    person(given = "Sean",
-           family = "Davis",
-           role = c("aut", "cre"),
-           email = "seandavi@gmail.com",
-           comment = c(ORCID = "0000-0002-8991-6458"))
-Description: This package serves as a template for using github actions to 
-    prepare a Bioconductor Workshop package for use. In particular,
-    a pkgdown website and docker image are generated based on workflow 
-    settings. 
+    c(person("Lambda", "Moses", email = "dlu2@caltech.edu", 
+    role = c("aut", "cre"),
+    comment = c(ORCID = "0000-0002-7092-9427")),
+    person("Alik", "Huseynov",
+    comment = c(ORCID = "0000-0002-1438-4389"),
+    role = "aut"),
+    person("Lior", "Pachter", email = "lpachter@caltech.edu",
+    role = c("aut", "ths"),
+    comment = c(ORCID = "0000-0002-9164-6231")))
+Description: This package contains the workshop material demonstrating 
+    SpatialFeatureExperiment and Voyager exploratory spatial data analysis.
 License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
@@ -19,10 +21,33 @@ RoxygenNote: 7.1.0
 Depends: 
     Biobase
 Suggests: 
+    BiocNeighbors,
+    BiocParallel,
+    BiocStyle,
+    BiocSingular,
+    bluster,
+    EBImage,
+    ggplot2,
     knitr,
+    Matrix,
+    patchwork,
+    pheatmap,
+    pkgdown,
+    rjson,
     rmarkdown,
-    pkgdown
-URL: https://seandavi.github.io/BuildABiocWorkshop/
-BugReports: https://github.com/seandavi/BuildABiocWorkshop/issues/new/choose
+    scales,
+    scater,
+    scico,
+    scran,
+    sf,
+    SFEData,
+    SingleCellExperiment,
+    SpatialFeatureExperiment,
+    terra,
+    tibble,
+    tidyr,
+    Voyager
+URL: https://lambdamoses.github.io/VoyagerHackathon/
+BugReports: https://github.com/lambdamoses/VoyagerHackathon/issues/new/choose
 VignetteBuilder: knitr
-DockerImage: ghcr.io/seandavi/buildabiocworkshop:latest
+DockerImage: ghcr.io/lambdamoses/voyagerhackathon:latest

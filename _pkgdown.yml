@@ -1,18 +1,25 @@
-url: https://seandavi.github.io/BuildABiocWorkshop
+url: https://lambdamoses.github.io/VoaygerHackathon
 
 template:
-  params:
-    bootswatch: flatly
-    #ganalytics: UA-99999999-9
-
+  bootstrap: 5
+  bootswatch: united
+  bslib:
+    text-muted: "#cccccc"
 home:
-  title: "BuildABiocWorkshop"
+  title: "VoyagerHackathon"
   type: inverse
 
 
 navbar:
-  right:
-   - icon: fa-github
-     href: https://github.com/seandavi/BuildABiocWorkshop
-     
-
+  title: "VoyagerHackathon"
+  left:
+    - text: "Event info"
+      href: articles/info.html
+    - text: "Workshop"
+      menu:
+        - text: "SFE"
+          href: articles/sfe.html
+        - text: "Voyager"
+          href: articles/voyager.html
+        - text: "R package dev"
+          href: articles/package.html

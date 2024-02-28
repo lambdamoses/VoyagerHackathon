@@ -1,0 +1,79 @@
+---
+title: "Intro to R package development"
+author:
+    - name: "Lambda Moses"
+      email: "dlu2@caltech.edu"
+date: "`r Sys.Date()`"
+output: 
+    BiocStyle::html_document:
+        toc: true
+        number_sections: true
+        toc_depth: 3
+        toc_float:
+            collapsed: true
+vignette: >
+  %\VignetteIndexEntry{package}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Introduction
+
+### Resources
+The freely available resources below may be helpful for participating in the hackathon:
+
+* [R Packages](https://r-pkgs.org/): Please read if you don't have prior experiences writing R packages. You will learn about the structure of R packages and how to write documentation and unit tests.
+* [Advanced R](https://adv-r.hadley.nz/): This book will give intermediate R users a more in depth understanding of the R language. Please read if you want to tackle issues marked as "advanced", which may involve S4 classes and functional programming.
+* [Bioconductor developer guide](https://contributions.bioconductor.org/index.html): Explains in details the requirements for Bioconductor packages. The R Packages book explains CRAN requirements, but Bioconductor has different and often more stringent requirements.
+* [Extending `ggplot2`](https://ggplot2.tidyverse.org/articles/extending-ggplot2.html): Advanced `ggplot2` topic relevant to plotting the image behind geometries in `Voyager`.
+
+### System setup
+In order to participate in the hackathon, you need to have a [GitHub account](https://github.com/) and [have `git` installed](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) on your computer. You also need to [install the devel version of R (4.4.0)](https://contributions.bioconductor.org/use-devel.html) and [the RStudio IDE](https://posit.co/download/rstudio-desktop/). The [Xcode Command Line Tools](https://www.freecodecamp.org/news/install-xcode-command-line-tools/) are required for Mac users and [`Rtools`](https://cran.r-project.org/bin/windows/Rtools/) for Windows users if you need to compile dependencies of SFE and Voyager from source, particularly the `sf` package which has several system dependencies. See instructions to install system dependencies of `sf` [here](https://r-spatial.github.io/sf/).
+
+Next `git clone` the repository of interest (Run on the command line (Terminal on Mac and something like Git Bash or PowerShell on Windows), not R console):
+
+```
+# SFE
+git clone https://github.com/pachterlab/SpatialFeatureExperiment.git
+
+# Voyager
+git clone https://github.com/pachterlab/voyager.git
+```
+
+This will create a directory `SpatialFeatureExperiment` or `Voyager` where the source code of the package is located. Then in RStudio, [create a project](https://support.posit.co/hc/en-us/articles/200526207-Using-RStudio-Projects), choose Existing Directory, and RStudio will open the project. 
+
+Next, in RStudio, in the R console, install `devtools` (makes it easier to build, install, and test packages in development), `roxygen2` (to generate documentation pages), `usethis` (makes it easier to add unit tests and vignettes), and `BiocManager` (install and manage Bioconductor packages) from CRAN:
+
+```{r, eval=FALSE}
+install.packages(c("devtools", "roxygen2", "usethis", "BiocManager"))
+```
+
+Install `devel` version of Bioconductor:
+
+```{r, eval=FALSE}
+BiocManager::install(version = "devel")
+```
+
+Then install the dependencies; this will also install packages that are suggested but not imported by SFE or Voyager (i.e. soft, optional dependencies) as well as packages required to build and test the package; this can take a while:
+
+```{r, eval=FALSE}
+devtools::install_dev_deps()
+```
+
+See [Chapter 2 of R Packages](https://r-pkgs.org/setup.html) for more details on setup.
+
+If you work on anything related to `readXenium()` or the `BioFormatsImage` class, please read the instructions to install the optional [`RBioFormats`](https://github.com/aoles/RBioFormats) package because the `BioFormats` Java library is used behind the scene and Java needs special setup on Mac.
+
+1. Why write a package?
+2. Structure of R packages
+3. Demo on toy package
+4. Why and how to write unit tests
+5. How to do pull requests
+6. How to submit packages to Bioconductor (if time permits)
