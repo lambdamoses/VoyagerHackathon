@@ -89,7 +89,9 @@ knitr::include_url("https://umap.openstreetmap.fr/en/map/accessible-entrance_103
 
 On this map, accessible entrance is marked in pink, the north entrance of the Norman W. Church Laboratory which is connected to the Kerckhoff building. The elevator is marked in orange: go down the corridor after entering from Church and make a slight right. Then after coming out of the elevator, make a left and the Morgan Library (marked in red box) will be on the left, with heavy glass doors.
 
-![Inside Morgan Library](https://kckarchitects.com/wp-content/uploads/2015/02/IMG_5794_hero.JPG.jpg){width=80%}
+```{r, out.width="80%", fig.cap="Inside Morgan Library", fig.align='center'}
+knitr::include_graphics("https://kckarchitects.com/wp-content/uploads/2015/02/IMG_5794_hero.JPG.jpg")
+```
 
 <br/>
 
