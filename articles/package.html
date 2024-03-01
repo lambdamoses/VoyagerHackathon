@@ -119,7 +119,13 @@ to plotting the image behind geometries in <code>Voyager</code>.</li>
 <h3 id="system-setup">System setup<a class="anchor" aria-label="anchor" href="#system-setup"></a>
 </h3>
 <p>In order to participate in the hackathon, you need to have a <a href="https://github.com/" class="external-link">GitHub account</a> and <a href="https://git-scm.com/book/en/v2/Getting-Started-Installing-Git" class="external-link">have
-<code>git</code> installed</a> on your computer. You also need to <a href="https://contributions.bioconductor.org/use-devel.html" class="external-link">install the
+<code>git</code> installed</a> on your computer. If you haven’t used
+<code>git</code> before, read <a href="https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository" class="external-link">the
+Git Basics chapter</a> to get started. RStudio has a GUI for
+<code>git</code> to make things easier, which is by default in the upper
+right panel if the R project of interest is version controlled with
+<code>git</code>.</p>
+<p>You also need to <a href="https://contributions.bioconductor.org/use-devel.html" class="external-link">install the
 devel version of R (4.4.0)</a> and <a href="https://posit.co/download/rstudio-desktop/" class="external-link">the RStudio IDE</a>.
 The <a href="https://www.freecodecamp.org/news/install-xcode-command-line-tools/" class="external-link">Xcode
 Command Line Tools</a> are required for Mac users and <a href="https://cran.r-project.org/bin/windows/Rtools/" class="external-link"><code>Rtools</code></a>
@@ -164,15 +170,51 @@ Packages</a> for more details on setup.</p>
 install the optional <a href="https://github.com/aoles/RBioFormats" class="external-link"><code>RBioFormats</code></a>
 package because the <code>BioFormats</code> Java library is used behind
 the scene and Java needs special setup on Mac.</p>
+</div>
+</div>
+<div class="section level2">
+<h2 id="live-demo">Live demo<a class="anchor" aria-label="anchor" href="#live-demo"></a>
+</h2>
+<p>We will go over <a href="https://r-pkgs.org/whole-game.html" class="external-link">Chapter
+1 of R Packages</a></p>
 <ol style="list-style-type: decimal">
 <li>Why write a package?</li>
 <li>Structure of R packages</li>
 <li>Demo on toy package</li>
+<li>How to debug</li>
 <li>Why and how to write unit tests</li>
 <li>How to do pull requests</li>
 <li>How to submit packages to Bioconductor (if time permits)</li>
 </ol>
 </div>
+<div class="section level2">
+<h2 id="voyager-vignette-guidelines">Voyager vignette guidelines<a class="anchor" aria-label="anchor" href="#voyager-vignette-guidelines"></a>
+</h2>
+<p>Vignettes are not in the main or devel branch, but in the
+<code>documentation</code> and <code>documentation-devel</code>
+branches. For the Voyager package, any vignette pull request should fork
+the <code>documentation-devel</code>, which is for vignettes in
+development. When the new vignette is ready, merge the
+<code>documentation-devel</code> branch into the
+<code>documentation</code> branch, which is the production version of
+the Voyager documentation website. Rules of the
+<code>documentation-devel</code> branch:</p>
+<ul>
+<li>The purpose of this branch is to make a <code>pkgdown</code> website
+with longer and detailed vignettes that would make the installed size of
+this package way too large to comply with Bioconductor’s 5 MB rule.</li>
+<li>Don’t change anything outside the <code>vignettes</code> directory
+in this branch. If the code doesn’t work, change in the
+<code>main</code> or <code>devel</code> branch and merge into this
+branch. This way the large vignettes won’t get into the
+<code>main</code> branch and the code is kept consistent, which is
+important since the <code>pkgdown</code> website also documents all the
+functions of this package.</li>
+<li>Exception to the previous rule: you may add packages to the Suggests
+field in DESCRIPTION for extra packages used in the vignettes.</li>
+<li>The file <code>vignettes/ref.bib</code> is automatically synced from
+Paperpile. Don’t edit by hand.</li>
+</ul>
 </div>
   </main><aside class="col-md-3"><nav id="toc"><h2>On this page</h2>
     </nav></aside>
