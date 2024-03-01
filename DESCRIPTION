@@ -50,4 +50,4 @@ Suggests:
 URL: https://pachterlab.github.io/VoyagerHackathon/
 BugReports: https://github.com/pachterlab/VoyagerHackathon/issues/new/choose
 VignetteBuilder: knitr
-DockerImage: ghcr.io/lambdamoses/voyagerhackathon:latest
+DockerImage: ghcr.io/pachterlab/voyagerhackathon:latest
