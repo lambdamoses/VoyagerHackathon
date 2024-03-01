@@ -35,7 +35,9 @@ The freely available resources below may be helpful for participating in the hac
 * [Extending `ggplot2`](https://ggplot2.tidyverse.org/articles/extending-ggplot2.html): Advanced `ggplot2` topic relevant to plotting the image behind geometries in `Voyager`.
 
 ### System setup
-In order to participate in the hackathon, you need to have a [GitHub account](https://github.com/) and [have `git` installed](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) on your computer. You also need to [install the devel version of R (4.4.0)](https://contributions.bioconductor.org/use-devel.html) and [the RStudio IDE](https://posit.co/download/rstudio-desktop/). The [Xcode Command Line Tools](https://www.freecodecamp.org/news/install-xcode-command-line-tools/) are required for Mac users and [`Rtools`](https://cran.r-project.org/bin/windows/Rtools/) for Windows users if you need to compile dependencies of SFE and Voyager from source, particularly the `sf` package which has several system dependencies. See instructions to install system dependencies of `sf` [here](https://r-spatial.github.io/sf/).
+In order to participate in the hackathon, you need to have a [GitHub account](https://github.com/) and [have `git` installed](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) on your computer. If you haven't used `git` before, read [the Git Basics chapter](https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository) to get started. RStudio has a GUI for `git` to make things easier, which is by default in the upper right panel if the R project of interest is version controlled with `git`.
+
+You also need to [install the devel version of R (4.4.0)](https://contributions.bioconductor.org/use-devel.html) and [the RStudio IDE](https://posit.co/download/rstudio-desktop/). The [Xcode Command Line Tools](https://www.freecodecamp.org/news/install-xcode-command-line-tools/) are required for Mac users and [`Rtools`](https://cran.r-project.org/bin/windows/Rtools/) for Windows users if you need to compile dependencies of SFE and Voyager from source, particularly the `sf` package which has several system dependencies. See instructions to install system dependencies of `sf` [here](https://r-spatial.github.io/sf/).
 
 Next `git clone` the repository of interest (Run on the command line (Terminal on Mac and something like Git Bash or PowerShell on Windows), not R console):
 
@@ -71,9 +73,21 @@ See [Chapter 2 of R Packages](https://r-pkgs.org/setup.html) for more details on
 
 If you work on anything related to `readXenium()` or the `BioFormatsImage` class, please read the instructions to install the optional [`RBioFormats`](https://github.com/aoles/RBioFormats) package because the `BioFormats` Java library is used behind the scene and Java needs special setup on Mac.
 
+## Live demo
+We will go over [Chapter 1 of R Packages](https://r-pkgs.org/whole-game.html)
+
 1. Why write a package?
 2. Structure of R packages
 3. Demo on toy package
-4. Why and how to write unit tests
-5. How to do pull requests
-6. How to submit packages to Bioconductor (if time permits)
+4. How to debug
+5. Why and how to write unit tests
+6. How to do pull requests
+7. How to submit packages to Bioconductor (if time permits)
+
+## Voyager vignette guidelines
+Vignettes are not in the main or devel branch, but in the `documentation` and `documentation-devel` branches. For the Voyager package, any vignette pull request should fork the `documentation-devel`, which is for vignettes in development. When the new vignette is ready, merge the `documentation-devel` branch into the `documentation` branch, which is the production version of the Voyager documentation website. Rules of the `documentation-devel` branch:
+
+* The purpose of this branch is to make a `pkgdown` website with longer and detailed vignettes that would make the installed size of this package way too large to comply with Bioconductor's 5 MB rule.
+* Don't change anything outside the `vignettes` directory in this branch. If the code doesn't work, change in the `main` or `devel` branch and merge into this branch. This way the large vignettes won't get into the `main` branch and the code is kept consistent, which is important since the `pkgdown` website also documents all the functions of this package.
+* Exception to the previous rule: you may add packages to the Suggests field in DESCRIPTION for extra packages used in the vignettes.
+* The file `vignettes/ref.bib` is automatically synced from Paperpile. Don't edit by hand.
