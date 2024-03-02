@@ -25,7 +25,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-Unlike in the workshop at the Bioconductor conference, the `devel` version of SFE and Voyager are used in the workshop and hackathon. This is the unstable version where new features are introduced prior to release.
+The `devel` version of SFE and Voyager are used in the workshop and hackathon. This is the unstable version where new features are introduced prior to release.
 
 ## Prerequisites
 To understand the workshop material, you are expected to be familiar with:
@@ -68,8 +68,7 @@ See the [R package dev workshop page](https://pachterlab.github.io/VoyagerHackat
 
 ## To use the Docker image
 
-This workshop can be run remotely on our server (URL will be emailed to you and will be destroyed on March 9 for security reasons). Alternatively, it can be run
-locally with the Docker image:
+This workshop can be run remotely on https://workshop.bioconductor.org/. Create a free account and log in, then on the left menu of past events, scroll to the bottom and you will find this workshop, which can still be accessed afterwards. Alternatively, it can be run locally with the Docker image:
 
 ```sh
 # Not working yet as of Fed 27
@@ -78,7 +77,7 @@ docker run -e PASSWORD=<choose_a_password_for_rstudio> -p 8787:8787 ghcr.io/lamb
 
 Once running, navigate to http://localhost:8787/ and then log in with `rstudio`:`yourchosenpassword`. 
 
-The required packages of the appropriate version as of July 2023 have been
+The required packages of the appropriate version (Bioc 3.19, as of March 2024) have been
 pre-installed on the Workshop Galaxy and in the Docker image.
 
 ## Location
@@ -102,7 +101,7 @@ This library is named after geneticist Thomas Hunt Morgan, a father of modern ge
 
 Comprehensive mapping of the gene regulation network in sea urchin development was also performed in this building by [Eric H. Davidson lab](https://www.bbe.caltech.edu/people/eric-h-davidson); some sea urchin images can be seen in the corridors of this building. There are more labs at Caltech studying unique model organisms, in jellyfish, squid, and rove beetles besides the sea urchin. I had the honor to take a molecular biology lab course on sea urchin development with Eric's student Peiyun Lee at UCLA when I was an undergrad (whole mount in situ hybridization in sea urchin embryos). We are part of a glorious tradition and this workshop extends this tradition to the future. 
 
-Meanwhile, Caltech did not admit female students when this building was built (1928), so initially there was no women's restroom. The restroom on the second floor has been converted to women's restroom with a bizarre structure. Men's restrooms are on the 1st and 3rd floors and in the Church building. Our lab (Pachter Lab) used to be in the basement of this building, taking the sea urchin lab space after Eric passed away. We moved to the Chen building in 2021; the former Kerckhoff space is still empty.
+Meanwhile, Caltech did not admit female students when this building was built (1928), so initially there was no women's restroom. The restroom on the second floor has been converted to women's restroom with a bizarre structure. Our lab (Pachter Lab) used to be in the basement of this building, taking the sea urchin lab space after Eric passed away. We moved to the Chen building in 2021; the former Kerckhoff space is still empty. Before we moved, there was no women's restroom in the basement or the 1st floor, so I had to either walk a long way to the Church building or climb 2 floors to the 2nd floor for restroom. More recently the restroom situation seems to be fixed; it took almost a century.
 
 ## Schedule
 

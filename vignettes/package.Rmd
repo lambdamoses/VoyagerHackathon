@@ -35,11 +35,15 @@ The freely available resources below may be helpful for participating in the hac
 * [Extending `ggplot2`](https://ggplot2.tidyverse.org/articles/extending-ggplot2.html): Advanced `ggplot2` topic relevant to plotting the image behind geometries in `Voyager`.
 
 ### System setup
-In order to participate in the hackathon, you need to have a [GitHub account](https://github.com/) and [have `git` installed](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) on your computer. If you haven't used `git` before, read [the Git Basics chapter](https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository) to get started. RStudio has a GUI for `git` to make things easier, which is by default in the upper right panel if the R project of interest is version controlled with `git`.
+In order to participate in the hackathon, you need to have a [GitHub account](https://github.com/) and [have `git` installed](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) on your computer. If you haven't used `git` before, read [the Git Basics chapter](https://git-scm.com/book/en/v2/Git-Basics-Getting-a-Git-Repository) to get started. RStudio has a GUI for `git` to make things easier, which is by default in the upper right panel if the R project of interest is version controlled with `git`. Version control helps you to keep track of changes in your code and to merge contributions from collaborators.
 
-You also need to [install the devel version of R (4.4.0)](https://contributions.bioconductor.org/use-devel.html) and [the RStudio IDE](https://posit.co/download/rstudio-desktop/). The [Xcode Command Line Tools](https://www.freecodecamp.org/news/install-xcode-command-line-tools/) are required for Mac users and [`Rtools`](https://cran.r-project.org/bin/windows/Rtools/) for Windows users if you need to compile dependencies of SFE and Voyager from source, particularly the `sf` package which has several system dependencies. See instructions to install system dependencies of `sf` [here](https://r-spatial.github.io/sf/).
+You also need to [install the devel version of R (4.4.0)](https://contributions.bioconductor.org/use-devel.html) and [the RStudio IDE](https://posit.co/download/rstudio-desktop/). Devel version of R because Bioconductor releases are tied to R versions. Bioconductor has two releases every year, synced with the R release schedule, one in late April, and the other in late October. The April release corresponds to a a bump in the minor version in R (e.g. going from 4.3.x to 4.4.0). R packages installed for one minor version of R are incompatible with a different minor version (e.g. packages installed under R 4.3.0 will still work with 4.3.1, but will not work with 4.2.x or 4.4.0). If you use one package in a given Bioconductor release (3.19 is the upcoming one this April), then you must use other package in the same release as well. This is so that users have a 6 month period of relative stability. Developers should introduce breaking changes and experimental features in the devel version (3.19 as of writing as 3.18 is the current release), so the changes don't immediately break users' code. This is why the hackathon uses the devel version.
 
-Next `git clone` the repository of interest (Run on the command line (Terminal on Mac and something like Git Bash or PowerShell on Windows), not R console):
+Moreover, you can install previous versions of Bioconductor, with the corresponding versions of R, to go back in time to reproduce analyses with old package versions. Because all Bioconductor packages used must be from the same Bioconductor release and the packages have been checked within the same release, newer breaking changes in dependencies introduced after this release should not break old code, thus providing some backward compatibility. However, this is not perfect, since CRAN and GitHub only packages don't have this release schedule, but it's possible and not difficult to install old versions of CRAN packages. Git version control also makes it possible and not difficult to install old versions of GitHub only packages.
+
+The [Xcode Command Line Tools](https://www.freecodecamp.org/news/install-xcode-command-line-tools/) are required for Mac users and [`Rtools`](https://cran.r-project.org/bin/windows/Rtools/) for Windows users if you need to compile dependencies of SFE and Voyager from source, particularly the `sf` package which has several system dependencies. See instructions to install system dependencies of `sf` [here](https://r-spatial.github.io/sf/). Binaries are available for Windows and Mac so compilation might not be necessary.
+
+Next `git clone` the repository of interest (Run on the command line (Terminal on Mac and something like Git Bash or PowerShell on Windows; RStudio also has a Terminal pane which is by default in the bottom left), not R console):
 
 ```
 # SFE
@@ -49,9 +53,9 @@ git clone https://github.com/pachterlab/SpatialFeatureExperiment.git
 git clone https://github.com/pachterlab/voyager.git
 ```
 
-This will create a directory `SpatialFeatureExperiment` or `Voyager` where the source code of the package is located. Then in RStudio, [create a project](https://support.posit.co/hc/en-us/articles/200526207-Using-RStudio-Projects), choose Existing Directory, and RStudio will open the project. 
+This will create a directory `SpatialFeatureExperiment` or `Voyager` where the source code of the package is located. Then in RStudio, [create a project](https://support.posit.co/hc/en-us/articles/200526207-Using-RStudio-Projects), choose Existing Directory, navigate to the `SpatialFeatureExperiment` or `Voyager` directory, and RStudio will open the project. 
 
-Next, in RStudio, in the R console, install `devtools` (makes it easier to build, install, and test packages in development), `roxygen2` (to generate documentation pages), `usethis` (makes it easier to add unit tests and vignettes), and `BiocManager` (install and manage Bioconductor packages) from CRAN:
+Next, in RStudio, in the R console, install [`devtools`](https://devtools.r-lib.org/) (makes it easier to build, install, and test packages in development), [`roxygen2`](https://roxygen2.r-lib.org/) (to generate documentation pages), [`usethis`](https://usethis.r-lib.org/) (makes it easier to add unit tests and vignettes), and [`BiocManager`](https://cran.r-project.org/web/packages/BiocManager/index.html) (install and manage Bioconductor packages) from CRAN:
 
 ```{r, eval=FALSE}
 install.packages(c("devtools", "roxygen2", "usethis", "BiocManager"))
@@ -63,7 +67,7 @@ Install `devel` version of Bioconductor:
 BiocManager::install(version = "devel")
 ```
 
-Then install the dependencies; this will also install packages that are suggested but not imported by SFE or Voyager (i.e. soft, optional dependencies) as well as packages required to build and test the package; this can take a while:
+Then install the dependencies; this will also install packages that are suggested but not imported by SFE or Voyager (i.e. soft, optional dependencies) as well as packages required to build and test the package; this can take a while if compiling packages from source:
 
 ```{r, eval=FALSE}
 devtools::install_dev_deps()
@@ -71,21 +75,92 @@ devtools::install_dev_deps()
 
 See [Chapter 2 of R Packages](https://r-pkgs.org/setup.html) for more details on setup.
 
-If you work on anything related to `readXenium()` or the `BioFormatsImage` class, please read the instructions to install the optional [`RBioFormats`](https://github.com/aoles/RBioFormats) package because the `BioFormats` Java library is used behind the scene and Java needs special setup on Mac.
+If you work on anything related to `readXenium()` or the `BioFormatsImage` class on Mac, please read the instructions to install the optional [`RBioFormats`](https://github.com/aoles/RBioFormats) package because the `BioFormats` Java library is used behind the scene and Java needs special setup on Mac.
 
 ## Live demo
-We will go over [Chapter 1 of R Packages](https://r-pkgs.org/whole-game.html)
+We will go over [Chapter 1 of R Packages](https://r-pkgs.org/whole-game.html) and give some glimpses into other aspects of package development. Here's the outline:
 
-1. Why write a package?
-2. Structure of R packages
-3. Demo on toy package
-4. How to debug
-5. Why and how to write unit tests
-6. How to do pull requests
-7. How to submit packages to Bioconductor (if time permits)
+### Why write a package?
+
+To paraphrase David Robinson, if you copy and paste the same code 3 times, then write a function. So if you need to change the code, you only need to change it once rather than 3 times. By extension, if you copy the same function 3 times, then write a package, so it's easier for you and others to reuse the function. 
+
+It's also easier to install the package from CRAN, Bioconductor, or GitHub with one line of code than to manually download the scripts and sort through things (such as file paths) that only work on the author's computer. Hence writing a package is a better way to share your code. Furthermore, R has built-in infrastructure to check the package for problems (`R CMD check`).
+
+The package can also structure analyses. In fact, this workshop itself is an R package although there are no R functions. When functions need to be written for a data analysis project, with a package, it's easier to load the functions while accounting for their interdependence. The workshop material here is the vignettes (long form documentation). It's also easier to install dependencies of the required versions with one line of code (dependencies are listed in the `DESCRIPTION` file) and to build the workshop website with the [`pkgdown`](https://pkgdown.r-lib.org/) package designed to build package documentation websites (like the one of Voyager).
+
+### Structure of R packages
+- `DESCRIPTION`: Basic info about your package, including name, version, author info, title, scription, and dependencies. Info here is shown on the CRAN or Bioconductor landing page of the ckage.
+- `NAMESPACE`: Which functions from which other package (i.e. dependency) are imported into your ckage? Which functions in your package are exported to the user?
+- `NEWS.md`: Which new features were implemented in which version
+- `LICENSE.md`: License, such as MIT, GPL, BSD, Artistic, and etc.
+- `README.md`: The first page you see when visiting the GitHub repo or the documentation website of e package. It should at least describe what the package does and how to install it, sometimes also a ttle on how to use it as well, but it shouldn't be too long. If it's too long, then it should be a gnette instead.
+- `R`: R source code of the package
+- `man`: Documentation files, generated automatically by `roxygen2`, don't edit by hand. However, ey used to be written by hand. The syntax is similar to Latex. I greatly appreciate `roxygen2` to ep documentation and code together and to greatly simplify the syntax. `roxygen2` also gives warnings en there are problems with the documentation when rendering it and automatically writes `NAMESPACE`, ving some tedious bookkeeping steps.
+- `vignettes`: Long form documentation, usually `Rmd`
+- `inst`: Put small example datasets and code used to generate them here which can be used for sting or function examples. Also put citation info here. Larger datasets should have their own ckages. There is a size limit to software packages on Bioconductor.
+- `src`: Code of compiled languages used in the package, usually C and/or C++, or Fortran in some old ckages. It's absent if there's only R code in the package. Since R itself is written in C and rtran, R has native interface to C and Fortran. The [`Rcpp`](https://www.rcpp.org/) package streamlines the interface between R and C++ and RStudio isn't too bad a C++ IDE. 
+- `tests`: Unit tests
+- `.Rbuildignore`: Files to ignore when building the R package, such as [GitHub tions](https://github.com/features/actions) workflow files, RStudio project settings (`*.Rproj`), and kgdown` documentation website build files.
+- `.gitignore`: Files to be ignored by `git` version control, usually the `*.Rproj` file and anything ecific to your personal R session such as R history.
+
+### Demo on toy package
+- Load package for informal testing: shift+command+L (Mac), control+shift+L (Windows), or `devtools::load_all()`
+- Render package documentation: shift+command+D (Mac), control+shift+D (Windows), needs setup: Tools  Project Options -> Build Tools -> check Generate documentation with Roxygen
+- Run all unit tests: shift+command+T (Mac), control+shift+T (Windows)
+- "Build" and "Git" tabs in the top right pane of RStudio
+
+### Dependencies
+- Imports vs. Suggests: Imported packages must be installed in order to install your package. In contrast, suggested packages don't have to be installed, but your code should check whether they're installed when calling their functions. If your package only uses another package for a marginal functionality, then that package should be suggested instead of imported.
+- Try to minimize it since a broken dependency will break your package
+- All dependencies of Biocondoctor packages must be on CRAN or Bioconductor so they have been rev ed and tested, no GitHub only packages
+- `R CMD check`: automated check for problems in package structure, code, and documentation. It also builds the vignettes and runs all examples and unit tests. It's on CRAN and for software packages on Bioconductor every day.
+
+### How to write documentation with `roxygen2`
+- Users and your future self will thank you for writing documentation. I do often look up my own cumentation.
+- I often write documentation before actually implementing the function to help myself think through at I really want from the function
+- Bioconductor requires you to document all arguments of all exported functions
+- Must document output of exported functions
+- All exported functions must have examples (required by Bioconductor but not required to pass `R CMD eck`)
+- Documenting multiple related functions on the same documentation page
+- Build documentation website with `pkgdown`
+
+### How to debug
+- Break point: Click on the space to the left of the line numbers in RStudio after loading the package. Next time you run the code, it will stop here and you will enter debug mode to step through the code inside functions line by line to see what's causing the error.
+- `browser()`: Similar to breakpoints, but you put it in a line of code before the code you would like to inspect. This is helpful when debugging `S4` methods since RStudio IDE doesn't work well with `S4` methods inside `setMethod()`.
+- `debug()`: Suppose the function `plotSpatialFeature()` doesn't work. Run `debug(plotSpatialFeature)` in the R console, so next time you call `plotSpatialFeature()`, you will enter debug mode and step through the code. Run `undebug(plotSpatialFeature)` if you no longer to enter debug mode when calling `plotSpatialFeature()`. 
+    - For `S4` methods, say the `SpatialFeatureExperiment` method of `dimGeometry`, the `S4` class should be specified in the `signature` argument, so you should run `debug(dimGeometry, signature = "SpatialFeatureExperiment")`. Same thing for `undebug()`.
+- `traceback()`: Find the line of code that caused the most recent error and the series of function calls that led to that line of code.
+- `options(error = recover)`: When you get an error, you can enter debug mode right where the error occured. Run `options(error = NULL)` to restore default behavior.
+- `options(warn = 2)`: When you get a warning and wonder where it comes from, this will convert warnings into errors so you can use `traceback()` to find where the warning comes from. Run `options(warn = 0)` to restore default behavior.
+
+### Why and how to write unit tests
+- I use `testthat`, but there are other unit test frameworks as well
+- Use [`vdiffr`](https://vdiffr.r-lib.org/) to unit test plotting functions but it's finicky since it requires an exact match which often doesn't work for `geom_sf()` which requires geospatial systems dependencies that can lead to subtle differences invisible to the human eye but will break `vdiffr`.
+- Code coverage: what percentage of your code is run in unit tests, though this metric can be gamed
+
+After writing some code, we would try it to see if it works. In unit tests, we save these informal tests so they can be run automatically. While this may be initially time consuming and tedious, on the long run it saves time and makes the package more stable, because when we fix a bug, refactor code, or implement new features, we can run the existing tests with one line of code or by clicking one button to check if the new edits broke any existing functionalities. 
+
+Unit tests should test each functionality separately and each test should be as isolated as possible so it's easier to track down what broke when a test fails. The isolation also forces you to write more modular code. Only test the user facing functions so you don't need to change the tests every time you change the internals. When testing an entire workflow rather than one functionality, it's called integration test. However, in practice, at least in R, I sometimes find myself doing something in between unit and integration tests.
+
+The tests should be performed on small datasets when possible so they can be run quickly in the daily CRAN or Bioconductor check. If an update in a dependency or R itself breaks you code, you are more likely to know if you have unit tests and high test coverage. Whenever you fix a bug, you should write a new unit test. Trying to increase code coverage (i.e. make sure more of your code has been tested) will make you think more carefully about how your function should behave and identify code that is never used.
+
+Finally, unit tests serve as documentation as well. In fact, example code in SFE and Voyager function documentation is often copied from unit tests.
+
+### How to speed up code (optimization)
+- "Premature optimization is the root of all evil". Need to consider user friendliness, readability, d maintainability. Faster != better; or we should all analyze data in C.
+- Timing code execution (`system.time()`, [`microbenchmark`](https://cran.r-project.org/web/packages/microbenchmark/index.html), [`bench`](https://bench.r-lib.org/))
+- Avoid slow R loops with vectorization and matrix multiplication
+- Profiling with [`profvis`](https://rstudio.github.io/profvis/)
+- `Rcpp` primer (if time permits): Run `usethis::use_rcpp()` to set up your package for `Rcpp`. Use `Rcpp` if you really have loopy code with thousands of iterations that can't be vectorized or need to use a C++ library. There are many `Rcpp*` packages that make it easy to use those C++ libraries from R, such as `RcppArmadillo`, `RcppEigen`, `BH`, `RcppGSL`, and so on. 
+- Speaking of the previous point but not necessarily about optimization, check out [`reticulate`](https://rstudio.github.io/reticulate/) and [`basilisk`](https://bioconductor.org/packages/release/bioc/html/basilisk.html) to call Python code from R. You can have both R and Python code chunks in Rmd or Quarto in RStudio, and you can access R objects from Python code chunks and vice versa.
+
+### Other
+How to do pull requests: Suppose you want to contribute to someone else's package. You first make a copy of that package (fork the repo), work on your copy, and when you're done you request the author to pull your changes (hence it's called "pull request") into their original repo so your contribution can officially become part of the package. In this hackathon, you will do pull requests, and then we will review them before we merge your pull requests.
+
+How to submit packages to Bioconductor (if time permits)
 
 ## Voyager vignette guidelines
-Vignettes are not in the main or devel branch, but in the `documentation` and `documentation-devel` branches. For the Voyager package, any vignette pull request should fork the `documentation-devel`, which is for vignettes in development. When the new vignette is ready, merge the `documentation-devel` branch into the `documentation` branch, which is the production version of the Voyager documentation website. Rules of the `documentation-devel` branch:
+Vignettes are not in the main or devel branch, but in the `documentation` and `documentation-devel` branches. For the Voyager package, any vignette pull request should fork the `documentation-devel` branch, which is for vignettes in development. When the new vignette is ready, merge the `documentation-devel` branch into the `documentation` branch, which is the production version of the Voyager documentation website. Rules of the `documentation-devel` branch:
 
 * The purpose of this branch is to make a `pkgdown` website with longer and detailed vignettes that would make the installed size of this package way too large to comply with Bioconductor's 5 MB rule.
 * Don't change anything outside the `vignettes` directory in this branch. If the code doesn't work, change in the `main` or `devel` branch and merge into this branch. This way the large vignettes won't get into the `main` branch and the code is kept consistent, which is important since the `pkgdown` website also documents all the functions of this package.
