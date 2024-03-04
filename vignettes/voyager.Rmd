@@ -53,8 +53,6 @@ library(bluster)
 theme_set(theme_bw())
 ```
 
-# Part 2: Voyager ESDA
-
 ```{r, echo=FALSE, out.width = "100%", fig.alt="Schematics of the Voyager project"}
 knitr::include_graphics("voyager.png")
 ```

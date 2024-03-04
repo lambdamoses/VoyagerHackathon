@@ -42,7 +42,6 @@ Below is a list of SFE features that extend the SPE object:
 * `localResults` are similar to [`reducedDims` in `SingleCellExperiment`](https://bioconductor.org/packages/release/bioc/vignettes/SingleCellExperiment/inst/doc/intro.html#3_Adding_low-dimensional_representations), but stores results from univariate and bivariate local spatial analysis results, such as from [`localmoran`](https://r-spatial.github.io/spdep/reference/localmoran.html), [Getis-Ord Gi\*](https://r-spatial.github.io/spdep/reference/localG.html), and [local spatial heteroscedasticity (LOSH)](https://r-spatial.github.io/spdep/reference/LOSH.html). Unlike in `reducedDims`, for each type of results (type is the type of analysis such as Getis-Ord Gi\*), each feature (e.g. gene) or pair of features for which the analysis is performed has its own results. The local spatial analyses can also be performed for attributes of `colGeometries` and `annotGeometries` in addition to gene expression and `colData`. Results of multivariate spatial analysis such as [MULTISPATI PCA](https://cran.r-project.org/web/packages/adespatial/vignettes/tutorial.html#multispati-analysis) can be stored in `reducedDims`.
 * `imgData` store images associated with the dataset. This field is inherited from SPE, but SFE has extended the image functionalities so images are not loaded into memory unless necessary.
 
-# Part 1: The SFE class
 ```{r, message=FALSE}
 library(sf)
 library(terra)
@@ -129,7 +128,8 @@ Each SFE object is an SCE object as SFE builds on top of SCE, or inherits from S
 
 At the center of SCE is the gene count matrix. You can get or set the gene count matrix with `counts` function:
 ```{r}
-(m <- counts(sfe))
+m <- counts(sfe)
+head(m)
 ```
 
 ```{r}
