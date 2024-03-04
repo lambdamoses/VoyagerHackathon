@@ -40,6 +40,7 @@ Suggests:
     scico,
     scran,
     sf,
+    sfarrow,
     SFEData,
     SingleCellExperiment,
     SpatialFeatureExperiment,
