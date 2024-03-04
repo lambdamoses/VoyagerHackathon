@@ -78,7 +78,7 @@ See [Chapter 2 of R Packages](https://r-pkgs.org/setup.html) for more details on
 If you work on anything related to `readXenium()` or the `BioFormatsImage` class on Mac, please read the instructions to install the optional [`RBioFormats`](https://github.com/aoles/RBioFormats) package because the `BioFormats` Java library is used behind the scene and Java needs special setup on Mac.
 
 ## Live demo
-We will go over [Chapter 1 of R Packages](https://r-pkgs.org/whole-game.html) and give some glimpses into other aspects of package development. Here's the outline:
+We will go over [Chapter 1 of R Packages](https://r-pkgs.org/whole-game.html) and give some glimpses into other aspects of package development. Some of the topics below are covered in [the last part of the Advanced R book](https://adv-r.hadley.nz/techniques.html). Here's the outline:
 
 ### Why write a package?
 

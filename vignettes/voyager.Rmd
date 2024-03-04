@@ -24,13 +24,11 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
-  eval = FALSE
+  comment = "#>"
 )
 ```
 
-# Introduction
-Introduction slides are available [here](https://github.com/lambdamoses/VoyagerWorkshop/blob/devel/vignettes/Bioc2023%20slides.pdf). The rendered version of this workshop is available [here](https://pachterlab.github.io/VoyagerHackathon/articles/voyager.html). The following R packages are used in this workshop, which are all on CRAN or Bioconductor. Bioconductor 3.19 (devel) is used in the workshop.
+The following R packages are used in this workshop, which are all on CRAN or Bioconductor. Bioconductor 3.19 (devel) is used in the workshop.
 ```{r, message=FALSE}
 library(SpatialFeatureExperiment)
 library(SingleCellExperiment)
@@ -57,6 +55,25 @@ theme_set(theme_bw())
 
 # Part 2: Voyager ESDA
 
+```{r, echo=FALSE, out.width = "100%", fig.alt="Schematics of the Voyager project"}
+knitr::include_graphics("voyager.png")
+```
+
+## 10X Visium
+As Visium from 10X Genomics is currently the most popular spatial transcriptomics technology, this workshop uses a Visium dataset.
+
+```{r, echo = FALSE, fig.alt='Bar chart showing the number of institutions using each spatial transcriptomics data collection method. Only methods used by at least 3 different institutions are shown. The bars are colored by category of the methods. 10X Visium which is based on sequence barcoding is used by almost 200 institutions. Following Visium are GeoMX DSP and GeoMX WTA which are "regions of interest" (ROI) methods, along with 2016 ST, MERFISH, and some other ROI selection methods.'}
+knitr::include_graphics("https://pachterlab.github.io/LP_2021/04-current_files/figure-html/n-insts-1.png")
+```
+
+In Visium, capture sequences with spot barcode, unique molecule identifier (UMI), and polyT to capture poly-adenylated mRNAs are printed in a hexagonal array on a glass slide. Each spot barcode has a known location, and the spots are 55 $\mu m$ in diameter and 100 $\mu m$ apart center to center. As the spots are much larger than most types of cells, Visium does not have single cell resolution. Tissue is mounted on each of the 4 capture areas on the slide, and each capture area has 4992 spots. The spots capture the transcripts from the tissue, which are then reverse transcribed, amplified, and sequenced.
+
+```{r, echo = FALSE, fig.alt="Intro to Visium, described in the previous paragraph"}
+knitr::include_graphics("visium.png")
+```
+
+Space Ranger is the official software to align the sequencing reads to the genome and quantify the UMIs in each spot for each gene. Spatial Ranger also takes in a histology image of the capture area, with which it determines which spots are in tissue. The user can also manually determine which spots are in tissue in the Loupe Browser.
+
 ## Dataset
 The dataset used in this vignette is from the paper [Large-scale integration of single-cell transcriptomic data captures transitional progenitor states in mouse skeletal muscle regeneration](https://doi.org/10.1038/s42003-021-02810-x) [@McKellar2021-ek]. Notexin was injected into the tibialis anterior muscle of mice to induce injury, and the healing muscle was collected 2, 5, and 7 days post injury for Visium analysis. The dataset in this vignette is from the timepoint at day 2. The vignette starts with a `SpatialFeatureExperiment` (SFE) object.
 
@@ -75,7 +92,7 @@ knitr::include_graphics("tissue_lowres_5a.jpeg")
 
 The image can be added to the SFE object and plotted behind the geometries, and needs to be flipped to align to the spots because the origin is at the top left for the image but bottom left for geometries.
 ```{r}
-sfe <- addImg(sfe, file = "tissue_lowres_5a.jpeg", sample_id = "Vis5A", 
+sfe <- addImg(sfe, imageSource = "tissue_lowres_5a.jpeg", sample_id = "Vis5A", 
               image_id = "lowres", 
               scale_fct = 1024/22208)
 sfe <- mirrorImg(sfe, sample_id = "Vis5A", image_id = "lowres")
@@ -639,8 +656,8 @@ Thought experiment: suppose you perform standard PCA and MULTISPATI PCA on your 
 
 ## Caveats
 1. The H&E image plotted behind the geometries can alter perception of the colors of the geometries.
-2. Only 2D data is supported at present, although in principle, `sf` and `GEOS` support 3D data.
-3. This workshop demonstrates ESDA on a single sample. However, studies often produce multiple biological replica in case and control groups. The ESDA results can be compared across samples, and in the next Bioc 3.18, computed jointly across samples within the same treatment group.
+2. In the devel version of SFE, 3D data is somewhat supported, as in 3D transcript spot geometries. However, `sf` is rather limited in 3D geometric operations. The operations can only be performed on the x and y coordinates but not the z coordinates.
+3. This workshop demonstrates ESDA on a single sample. However, studies often produce multiple biological replica in case and control groups. The ESDA results can be compared across samples, and hopefully in the Bioc 3.19 release, computed jointly across samples within the same treatment group.
 
 # Session info
 ```{r}

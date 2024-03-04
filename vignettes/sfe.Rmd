@@ -20,13 +20,12 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
-  eval = FALSE
+  comment = "#>"
 )
 ```
 
 ## `SpatialFeatureExperiment`
-`SpatialFeatureExperiment` (SFE) is a new [S4](http://adv-r.had.co.nz/S4.html) class built on top of [`SpatialExperiment`](https://bioconductor.org/packages/release/bioc/html/SpatialExperiment.html) (SPE). SFE incorporates geometries and geometric operations with the [`sf`](https://cran.r-project.org/web/packages/sf/index.html) package. Examples of supported geometries are Visium spots represented with polygons corresponding to their size, cell or nuclei segmentation polygons, tissue boundary polygons, pathologist annotation of histological regions, and transcript spots of genes. Using `sf`, `SpatialFeatureExperiment` leverages the GEOS C++ library underlying `sf` for geometry operations, including algorithms for for determining whether geometries intersect, finding intersection geometries, buffering geometries with margins, etc. A schematic of the SFE object is shown below:
+`SpatialFeatureExperiment` (SFE) is a new [S4](https://adv-r.hadley.nz/s4.html) class built on top of [`SpatialExperiment`](https://bioconductor.org/packages/release/bioc/html/SpatialExperiment.html) (SPE). SFE incorporates geometries and geometric operations with the [`sf`](https://cran.r-project.org/web/packages/sf/index.html) package. Examples of supported geometries are Visium spots represented with polygons corresponding to their size, cell or nuclei segmentation polygons, tissue boundary polygons, pathologist annotation of histological regions, and transcript spots of genes. Using `sf`, `SpatialFeatureExperiment` leverages the GEOS C++ library underlying `sf` for geometry operations, including algorithms for for determining whether geometries intersect, finding intersection geometries, buffering geometries with margins, etc. A schematic of the SFE object is shown below:
 
 ```{r, echo=FALSE, out.width = "100%",  fig.alt="SpatialFeatureExperiment expands on SpatialExperiment by adding column, row, and annotation geometries and spatial graphs. This is explained in detail in the following paragraphs."}
 knitr::include_graphics("sfe_schematics.png")
@@ -36,41 +35,31 @@ Below is a list of SFE features that extend the SPE object:
 
 * `colGeometries` are `sf` data frames associated with the entities that correspond to columns of the gene count matrix, such as Visium spots or cells. The geometries in the `sf` data frames can be Visium spot centroids, Visium spot polygons, or for datasets with single cell resolution, cell or nuclei segmentations. Multiple `colGeometries` can be stored in the same SFE object, such as one for cell segmentation and another for nuclei segmentation. There can be non-spatial, attribute columns in a `colGeometry` rather than `colData`, because the `sf` class allows users to specify how attributes relate to geometries, such as "constant", "aggregate", and "identity". See the `agr` argument of the [`st_sf` documentation](https://r-spatial.github.io/sf/reference/sf.html).
 * `colGraphs` are spatial neighborhood graphs of cells or spots. The graphs have class `listw` (`spdep` package), and the `colPairs` of `SingleCellExperiment` was not used so no conversion is necessary to use the numerous spatial dependency functions from `spdep`, such as those for Moran's I, Geary's C, Getis-Ord Gi*, LOSH, etc. Conversion is also not needed for other classical spatial statistics packages such as `spatialreg` and `adespatial`.
-* `rowGeometries` are similar to `colGeometries`, but support entities that correspond to rows of the gene count matrix, such as genes. A potential use case is to store transcript spots for each gene in smFISH or in situ sequencing based datasets.
+* `rowGeometries` are similar to `colGeometries`, but support entities that correspond to rows of the gene count matrix, such as genes. As we shall see below, a use case is to store transcript spots for each gene in smFISH or in situ sequencing based datasets.
 * `rowGraphs` are similar to `colGraphs`. A potential use case may be spatial colocalization of transcripts of different genes.
 * `annotGeometries` are `sf` data frames associated with the dataset but not directly with the gene count matrix, such as tissue boundaries, histological regions, cell or nuclei segmentation in Visium datasets, and etc. These geometries are stored in this object to facilitate plotting and using `sf` for operations such as to find the number of nuclei in each Visium spot and which histological regions each Visium spot intersects. Unlike `colGeometries` and `rowGeometries`, the number of rows in the `sf` data frames in `annotGeometries` is not constrained by the dimension of the gene count matrix and can be arbitrary.
 * `annotGraphs` are similar to `colGraphs` and `rowGraphs`, but are for entities not directly associated with the gene count matrix, such as spatial neighborhood graphs for nuclei in Visium datasets, or other objects like myofibers. These graphs are relevant to `spdep` analyses of attributes of these geometries such as spatial autocorrelation in morphological metrics of myofibers and nuclei. With geometry operations with `sf`, these attributes and results of analyses of these attributes (e.g. spatial regions defined by the attributes) may be related back to gene expression.
 * `localResults` are similar to [`reducedDims` in `SingleCellExperiment`](https://bioconductor.org/packages/release/bioc/vignettes/SingleCellExperiment/inst/doc/intro.html#3_Adding_low-dimensional_representations), but stores results from univariate and bivariate local spatial analysis results, such as from [`localmoran`](https://r-spatial.github.io/spdep/reference/localmoran.html), [Getis-Ord Gi\*](https://r-spatial.github.io/spdep/reference/localG.html), and [local spatial heteroscedasticity (LOSH)](https://r-spatial.github.io/spdep/reference/LOSH.html). Unlike in `reducedDims`, for each type of results (type is the type of analysis such as Getis-Ord Gi\*), each feature (e.g. gene) or pair of features for which the analysis is performed has its own results. The local spatial analyses can also be performed for attributes of `colGeometries` and `annotGeometries` in addition to gene expression and `colData`. Results of multivariate spatial analysis such as [MULTISPATI PCA](https://cran.r-project.org/web/packages/adespatial/vignettes/tutorial.html#multispati-analysis) can be stored in `reducedDims`.
-
-## `Voyager`
-
-```{r, echo=FALSE, out.width = "100%", fig.alt="Schematics of the Voyager project"}
-knitr::include_graphics("voyager.png")
-```
-
-## 10X Visium
-As Visium from 10X Genomics is currently the most popular spatial transcriptomics technology, this workshop uses a Visium dataset.
-
-```{r, echo = FALSE, fig.alt='Bar chart showing the number of institutions using each spatial transcriptomics data collection method. Only methods used by at least 3 different institutions are shown. The bars are colored by category of the methods. 10X Visium which is based on sequence barcoding is used by almost 200 institutions. Following Visium are GeoMX DSP and GeoMX WTA which are "regions of interest" (ROI) methods, along with 2016 ST, MERFISH, and some other ROI selection methods.'}
-knitr::include_graphics("https://pachterlab.github.io/LP_2021/04-current_files/figure-html/n-insts-1.png")
-```
-
-In Visium, capture sequences with spot barcode, unique molecule identifier (UMI), and polyT to capture poly-adenylated mRNAs are printed in a hexagonal array on a glass slide. Each spot barcode has a known location, and the spots are 55 $\mu m$ in diameter and 100 $\mu m$ apart center to center. As the spots are much larger than most types of cells, Visium does not have single cell resolution. Tissue is mounted on each of the 4 capture areas on the slide, and each capture area has 4992 spots. The spots capture the transcripts from the tissue, which are then reverse transcribed, amplified, and sequenced.
-
-```{r, echo = FALSE, fig.alt="Intro to Visium, described in the previous paragraph"}
-knitr::include_graphics("visium.png")
-```
-
-Space Ranger is the official software to align the sequencing reads to the genome and quantify the UMIs in each spot for each gene. Spatial Ranger also takes in a histology image of the capture area, with which it determines which spots are in tissue. The user can also manually determine which spots are in tissue in the Loupe Browser.
+* `imgData` store images associated with the dataset. This field is inherited from SPE, but SFE has extended the image functionalities so images are not loaded into memory unless necessary.
 
 # Part 1: The SFE class
-```{r}
+```{r, message=FALSE}
+library(sf)
+library(terra)
+library(ggplot2)
+library(SingleCellExperiment)
+library(scater)
+library(scran)
 library(SpatialFeatureExperiment)
 library(SFEData)
+library(Voyager)
+library(EBImage)
+library(scales)
+theme_set(theme_bw())
 ```
 
 ## Create an SFE object
-
+### Visium
 10x Genomics Space Ranger output from a Visium experiment can be read in a similar manner as in `SpatialExperiment`; the `SpatialFeatureExperiment` SFE object has the `spotPoly` column geometry for the spot polygons. If the filtered matrix (i.e. only spots in the tissue) is read in, then a column graph called `visium` will also be present for the spatial neighborhood graph of the Visium spots on the tissue. The graph is not computed if all spots are read in regardless of whether they are on tissue.
 
 ```{r}
@@ -105,118 +94,455 @@ list.files(file.path(samples[1], "outs", "spatial"))
 
 Space Ranger output includes the gene count matrix, spot coordinates, and spot diameter. The Space Ranger output does NOT include nuclei segmentation or pathologist annotation of histological regions. Extra image processing, such as with ImageJ and QuPath, are required for those geometries.
 
+### Vizgen MERFISH
+As of Bioc 3.19, the following read functions have been implemented in SFE: `read10xVisiumSFE`, `readVizgen` (MERFISH), `readCosMX`, and `readXenium`. Read functions for more commercial technologies will be implemented soon, and you can help writing one in this hackathon, such as for [Molecular Cartography](https://github.com/pachterlab/SpatialFeatureExperiment/issues/18). Here we demonstrate MERFISH
+
+```{r}
+fn <- system.file("extdata/vizgen_cellbound", package = "SpatialFeatureExperiment")
+list.files(fn)
+```
+
+The `cell_boundaries` directory has `hdf5` file with cell segmentation polygons, which are rather slow to read, so it's faster to read the cell segmentation polygons from the `cell_boundaries.parquet` file. The [parquet file](https://www.databricks.com/glossary/what-is-parquet) stores column-oriented data more efficiently than old fashioned `csv` and can contain Simple Feature geometry data. The `cell_by_gene.csv` file is the gene count matrix. `detected_transcripts.csv` has coordinates of transcript spots and is reformatted into a new parquet file when `readVizgen` is called with `add_molecules = TRUE` (default is `FALSE`) so the transcript spots can be read into R much more quickly next time the data is read. For larger datasets, this reformatting can take a while. 
+
+```{r}
+file.copy(fn, ".", recursive = TRUE)
+(sfe_vizgen <- readVizgen("vizgen_cellbound", add_molecules = TRUE))
+```
+
+Look at the image data stored in the `imgData` field; the actual images are in the data column. We will go over the getters of the images and plot the images later.
+```{r}
+imgData(sfe_vizgen)
+```
+
+The `images` directory contains images from 3 types of cell membrane stains, DAPI (nuclei), and PolyT (all polyadenylated transcripts, visualizing whole cells). When there are multiple z-planes, by default the center plane (the 3rd plane) is read, but this can be changed. The cell segmentation is the same in all z-planes from Vizgen output. 
+
 See [this vignette](https://pachterlab.github.io/voyager/articles/create_sfe.html) on creating SFE objects from scratch and for other spatial trancriptomics technologies.
 
-## Operations of SFE objects
-User interfaces to get or set the geometries and spatial graphs emulate those of `reducedDims` and `row/colPairs` in `SingleCellExperiment`. Column and row geometries also emulate `reducedDims` in internal implementation, while annotation geometries and spatial graphs differ. Operations on SFE objects are demonstrated on a small toy dataset (you may need to answer a prompt in the R console when downloading the dataset):
+## Non-spatial operations of SFE objects
+Operations on SFE objects are demonstrated on a small toy dataset (you may need to answer a prompt in the R console when downloading the dataset):
 ```{r}
 (sfe <- McKellarMuscleData(dataset = "small"))
+```
+
+### `SingleCellExperiment` getters and setters
+Each SFE object is an SCE object as SFE builds on top of SCE, or inherits from SCE, so all the SCE methods apply. Here "inherits" is just like each bioinformatician is a human, where "bioinformatician" is a bit like SFE and "human" is like SCE. Here we go over SCE getters and setters.
+
+At the center of SCE is the gene count matrix. You can get or set the gene count matrix with `counts` function:
+```{r}
+(m <- counts(sfe))
+```
+
+```{r}
+# Setter
+counts(sfe) <- m
+```
+
+After log normalizing data, similarly the `logcounts` function can be used to get or set the log normalized gene count matrix.
+
+The gene count matrix has metadata about the cells and genes. Use the `colData` function to get cell metadata and `rowData` to get gene metadata
+```{r}
+colData(sfe)
+```
+
+```{r}
+rowData(sfe)
+```
+
+Just like in Seurat, the SCE object can be subsetted like a matrix. Here not all Visium spots intersect the tissue. In this dataset, whether the spot intersects tissue is in a column in `colData` called `in_tissue`, and we'll subset the SFE object to only keep spots in tissue, and to only keep genes that are detected. `colData` columns in SCE can be accessed with the `$` operator as if getting a column from a data frame.
+```{r}
+sfe_tissue <- sfe[, sfe$in_tissue]
+sfe_tissue <- sfe_tissue[rowSums(counts(sfe_tissue)) > 0,]
+```
+
+PCA is part of the standard scRNA-seq data analysis workflow. Here we'll first normalize the data and then perform PCA and get the PCA results.
+```{r}
+sfe_tissue <- logNormCounts(sfe_tissue)
+# Log counts getter
+logcounts(sfe_tissue) |> head()
+```
+
+```{r}
+# Highly variable genes
+dec <- modelGeneVar(sfe_tissue)
+hvgs <- getTopHVGs(dec, n = 1000)
+sfe_tissue <- runPCA(sfe_tissue, ncomponents = 10, subset_row = hvgs,
+                     exprs_values = "logcounts", scale = TRUE)
+```
+
+Later we will see that Voyager spatial analysis functions are modeled after `runPCA` un user interface. The `reducedDim` function can be used to get and set dimension reduction results. User interfaces to get or set the geometries and spatial graphs emulate those of `reducedDims` and `row/colPairs` in `SingleCellExperiment`. Column and row geometries also emulate `reducedDims` in internal implementation, while annotation geometries and spatial graphs differ.
+
+```{r}
+pca_res <- reducedDim(sfe_tissue, "PCA")
+head(pca_res)
+```
+
+Here the second argument is used to specify which dimension reduction result to get. If it's not specified, then by default the first one is retrieved, so the code below would be equivalent to the previous chunk:
+```{r}
+reducedDim(sfe_tissue) |> head()
+```
+
+```{r}
+# Set PCA embeddings say if you ran PCA elsewhere
+reducedDim(sfe_tissue, "PCA") <- pca_res
+```
+
+Which dimension reductions are present?
+```{r}
+reducedDimNames(sfe_tissue)
 ```
 
 ### Column geometries
 Column geometries or `colGeometries` are the geometries that correspond to columns of the gene count matrix, such as Visium spots and cells in datasets from a single cell resolution technology. Each SFE object can have multiple column geometries. For example, in a dataset with single cell resolution, whole cell segmentation and nuclei segmentation are two different `colGeometries`. However, for Visium, the spot polygons are the only `colGeometry` obviously relevant, though users can add other geometries such as results of geometric operations on the spot polygons. The different geometries can be get or set with their names, and "spotPoly" is the standard name for Visium spot polygons.
 ```{r}
 # Get Visium spot polygons
-(spots <- colGeometry(sfe, "spotPoly"))
+(spots <- colGeometry(sfe_tissue, "spotPoly"))
 ```
 
+Here we get a `sf` data frame, which is just like a regular data frame but with a special `geometry` column. Now plot these spot polygons
+
 ```{r}
-plot(st_geometry(spots))
+ggplot(spots) + geom_sf()
 ```
 
 ```{r}
 # Set colGeometry
-colGeometry(sfe, "spotPoly") <- spots
+colGeometry(sfe_tissue, "spotPoly") <- spots
 ```
 
 To see which `colGeometries` are present in the SFE object:
 ```{r}
-colGeometryNames(sfe)
+colGeometryNames(sfe_tissue)
 ```
 
 There are shorthands for some specific column or row geometries. For example, `spotPoly(sfe)` is equivalent to `colGeometry(sfe, "spotPoly")` shown above. 
 
 ```{r}
 # Getter
-(spots <- spotPoly(sfe))
+(spots <- spotPoly(sfe_tissue))
 ```
 
 ```{r}
 # Setter
-spotPoly(sfe) <- spots
+spotPoly(sfe_tissue) <- spots
 ```
+
+Exercise: The `cellSeg` function gets cell segmentation from the MERFISH dataset in `sfe_vizgen`. Get and plot the cell segmentations.
 
 ### Annotation
 Annotation geometries can be get or set with `annotGeometry()`. In column or row geometries, the number of rows of the `sf` data frame (i.e. the number of geometries in the data frame) is constrained by the number of rows or columns of the gene count matrix respectively, because just like `rowData` and `colData`, each row of a `rowGeometry` or `colGeometry` `sf` data frame must correspond to a row or column of the gene count matrix respectively. In contrast, an `annotGeometry` `sf` data frame can have any dimension, not constrained by the dimension of the gene count matrix. 
 
 ```{r}
 # Getter, by name or index
-(tb <- annotGeometry(sfe, "tissueBoundary"))
+(tb <- annotGeometry(sfe_tissue, "tissueBoundary"))
 ```
 
 ```{r}
-plot(st_geometry(tb))
+ggplot(tb) + geom_sf()
 ```
 
 ```{r}
 # Setter, by name or index
-annotGeometry(sfe, "tissueBoundary") <- tb
+annotGeometry(sfe_tissue, "tissueBoundary") <- tb
 ```
 
 See which `annotGeometries` are present in the SFE object:
 ```{r}
-annotGeometryNames(sfe)
+annotGeometryNames(sfe_tissue)
 ```
 
 There are shorthands for specific annotation geometries. For example, `tissueBoundary(sfe)` is equivalent to `annotGeometry(sfe, "tissueBoundary")`. `cellSeg()` (cell segmentation) and `nucSeg()` (nuclei segmentation) would first query `colGeometries` (for single cell, single molecule technologies, equivalent to `colGeometry(sfe, "cellSeg")` or `colGeometry(sfe, "nucSeg")`), and if not found, they will query `annotGeometries` (for array capture and microdissection technologies, equivalent to `annotGeometry(sfe, "cellSeg")` or `annotGeometry(sfe, "nucSeg")`). 
 
 ```{r}
 # Getter
-(tb <- tissueBoundary(sfe))
+(tb <- tissueBoundary(sfe_tissue))
 ```
 
 ```{r}
 # Setter
-tissueBoundary(sfe) <- tb
+tissueBoundary(sfe_tissue) <- tb
 ```
 
 ### Spatial graphs
 The spatial neighborhood graphs for Visium spots are stored in the `colGraphs` field, which has similar user interface as `colGeometries`. SFE also wraps all methods to find the spatial neighborhood graph implemented in the `spdep` package, and triangulation is used here as demonstration.
 ```{r}
-(g <- findSpatialNeighbors(sfe, MARGIN = 2, method = "tri2nb"))
+(g <- findSpatialNeighbors(sfe_tissue, MARGIN = 2, method = "tri2nb"))
 ```
 
 ```{r}
-plot(g, coords = spatialCoords(sfe))
+plot(g, coords = spatialCoords(sfe_tissue))
 ```
 
 ```{r}
 # Set graph by name
-colGraph(sfe, "graph1") <- g
+colGraph(sfe_tissue, "graph1") <- g
 ```
 
 ```{r}
 # Get graph by name
-(g <- colGraph(sfe, "graph1"))
+(g <- colGraph(sfe_tissue, "graph1"))
 ```
 
 For Visium, spatial neighborhood graph of the hexagonal grid can be found with the known locations of the barcodes. One SFE object can have multiple `colGraphs`.
 ```{r}
-colGraph(sfe, "visium") <- findVisiumGraph(sfe)
+colGraph(sfe_tissue, "visium") <- findVisiumGraph(sfe_tissue)
 ```
 
 ```{r}
-plot(colGraph(sfe, "visium"), coords = spatialCoords(sfe))
+plot(colGraph(sfe_tissue, "visium"), coords = spatialCoords(sfe_tissue))
 ```
 
 Which graphs are present in this SFE object?
 ```{r}
-colGraphNames(sfe)
+colGraphNames(sfe_tissue)
 ```
 
 While this workshop only works with one sample, i.e. tissue section, operations on multiple samples is discussed in [the vignette of the SFE package](https://pachterlab.github.io/SpatialFeatureExperiment/articles/SFE.html#multiple-samples).
 
+### Row geometries
+The Visium dataset does not have geometries associated with genes, but the MERFISH dataset does. The `rowGeometry` getter and setter have pretty much the same user interface as the getters and setters covered above:
+```{r}
+(rg <- rowGeometry(sfe_vizgen, "txSpots"))
+```
+
+```{r}
+# Setter
+rowGeometry(sfe_vizgen, "txSpots") <- rg
+```
+
+In the case of transcript spots, there's a special convenience function `txSpots`
+```{r}
+txSpots(sfe_vizgen)
+```
+
+Plot the transcript spots (for the toy dataset, they were subsampled to keep the SFE package small; usually they are much denser)
+```{r}
+ggplot() + 
+    geom_sf(data = cellSeg(sfe_vizgen)) +
+    geom_sf(data = rg, size = 0.5)
+```
+
+### Images
+In SPE, the images are only used for visualization, but SFE extended the SPE image functionality so large images don't have to be loaded into memory unless necessary. In SFE, there are 3 types of images:
+
+1. `SpatRasterImage`, the default, a thin wrapper around the [`SpatRaster`](https://rspatial.github.io/terra/reference/SpatRaster-class.html) class in the `terra` object to make it conform to SPE's requirements. Large images are not loaded into memory unless necessary and it's possible to only load a down sampled lower resolution version of the image into memory. Spatial extent is part of `SpatRaster`. The extent is important to delineate where the image is in the coordinate system within the tissue section. This is a more sophisticated way to make sure the image is aligned with the geometries than the scale factor in SPE which only works for Visium and would not allow the SPE object to be cropped.
+2. `BioFormatsImage` is used for [`OME-TIFF`](https://docs.openmicroscopy.org/ome-model/5.6.3/ome-tiff/) images whose compression can't be read by `terra`. The image is not loaded into memory. It's just some metadata, which includes the file path, extent, and origin (minimum value of coordinates). So far functions related to `BioFormatsImage` cater to Xenium data.
+3. `EBImage` is a thin wrapper around the [`Image`](https://bioconductor.org/packages/release/bioc/vignettes/EBImage/inst/doc/EBImage-introduction.html#3_Image_data_representation) class in the `EBImage` package to conform to SPE's requirements. With `EBImage`, one can do thresholding and morphological operations. However, it's not merely a wrapper; it contains another metadata field for the extent. When `BioFormatsImage` is loaded into memory, it becomes `EBImage`.
+
+In the MERFISH dataset above, the image is represented as `SpatRasterImage`. Get images with the `getImg` function, and use the `image_id` function to indicate which image to get, and if it's left blank, the first imaget will be retrieved:
+
+```{r}
+(img <- getImg(sfe_vizgen, image_id = "DAPI_z3"))
+```
+
+Use th `ext` function to get the extent of the image
+```{r}
+ext(img)
+```
+
+`SpatRasterImage` is a thin wrapper; use `imgRaster` to get the image itself:
+```{r}
+plot(imgRaster(img), col = viridis_pal()(50))
+```
+
+The advantage of `SpatRasterImage` is that one can use vector geometries such as in `sf` data frames to extract data from the raster image. With a binary mask, the `terra` package can convert the mask into polygons and vice versa. 
+
+But there are some disadvantages, such as that `terra` is built for geography so it's difficult to perform affine transforms of the image (including rotation); in geography the transformation is performed by reprojecting the map and there are standards for the projections such as the Mercator and Robinson projections of the world map. So when the `SpatRasterImage` is rotated, it's converted into `EBImage`, which can be converted back to `SpatRasterImage`. `BioFormatsImage` can also be converted into `SpatRasterImage` though that goes through `EBImage`. Also, one cannot perform image processing such as morphological operations, watershed segmentation, and so on that can be performed by `EBImage`. 
+
+Here we convert this image into `EBImage`, and plot it with the `EBImage` package
+```{r}
+ebi <- toEBImage(img)
+display(imgRaster(ebi) |> normalize(), method = "raster")
+```
+
+Finally, we can call a Voyager function to plot the image, cell segmentation, and transcript spots together:
+```{r}
+plotSpatialFeature(sfe_vizgen, features = "volume", colGeometryName = "cellSeg",
+                   image_id = "DAPI_z3", dark = TRUE) +
+    geom_sf(data = rg, size = 0.1, color = "white")
+```
+
+BTW, the reason why the transcript spots are not assigned to cells but stored in `rowGeometries` as `MULTIPOINT` is that some transcript spots are not in any segmented cells as shown in this plot. However, it doesn't mean that they are irrelevant.
+
+Also, the plot above shows transcript spots from all genes in this dataset and they're very down sampled. In the hackathon, you may choose to work on [this issue](https://github.com/pachterlab/voyager/issues/14) to add `rowGeometries` to the `plotSpatialFeature` function and add an argument to specify which gene(s) to plot. Typically only a small number of genes should be plotted at a time, because otherwise the points will be too crowded to see and if using colors to distinguish between genes, there will be colors that are difficult to distinguish. I suggest using point shape to distinguish between genes when colors are already used for cell data.
+
+Turn the above code chunk into a function as we'll call it several times more though only for this MERFISH dataset
+```{r}
+plot_sfe_vizgen <- function(sfe) {
+    plotSpatialFeature(sfe, features = "volume", colGeometryName = "cellSeg",
+                   image_id = "DAPI_z3", dark = TRUE) +
+    geom_sf(data = txSpots(sfe), size = 0.1, color = "white")
+}
+```
+
+## Spatial operations
+### Bounding box
+The bounding box of a geometry is the smallest rectangle that contains this geometry, so you get minimum and maximum x coordinates and y coordinates. We can find the bounding box of individual `sf` data frames with `st_bbox` from the `sf` package
+
+```{r}
+st_bbox(rg)
+```
+
+However, in an SFE object, there are multiple geometries, such as cell centroids, cell segmentation, nucleus segmentation, tissue boundary, transcript spots, and so on, and there are images. The `bbox` function for SFE aggregates the bounding boxes of all the geometries (and optionally images) to get an overall bounding box of the SFE object:
+```{r}
+bbox(sfe_vizgen)
+```
+
+```{r}
+# In this case the image is not larger than the geometries
+bbox(sfe_vizgen, include_image = TRUE)
+```
+
+### Cropping
+You can think of the SFE object as a stack of maps that are aligned, like the [National Map](https://apps.nationalmap.gov/viewer/) layers of satellite images, land use, administrative boundaries, watersheds, rock formations, faults, and etc. Cropping will crop all of the maps. One can crop with either a bounding box or a polygon of any shape. The `colGeometryName` argument specifies the `colGeometry` to decide which cell to keep after cropping. Using the centroid would be different from using the cell polygon since a polygon can slightly overlap with the bounding box while the centroid is outside.
+
+```{r}
+bbox_use <- c(xmin = 6550, xmax = 6650, ymin = -1350, ymax = -1250)
+sfe_cropped <- crop(sfe_vizgen, bbox_use, colGeometryName = "cellSeg")
+bbox(sfe_cropped)
+```
+
+```{r}
+plot_sfe_vizgen(sfe_cropped)
+```
+
+Don't like those tiny slivers of cells at the boundary of the bounding box? We can also keep any cell that intersects with the bounding box and with larger datasets, this is much faster than finding the actual intersection geometries. The `keep_whole` argument makes sure that the cells are kept whole; "col" because it can also be "annot" to keep `annotGeometry` items (e.g. cell segmentation in Visium datasets) whole.
+```{r}
+sfe_cropped2 <- crop(sfe_vizgen, bbox_use, colGeometryName = "cellSeg",
+                     keep_whole = "col")
+```
+
+```{r}
+plot_sfe_vizgen(sfe_cropped2) +
+    geom_sf(data = st_as_sfc(st_bbox(bbox_use)), fill = NA, color = "red", 
+            linewidth = 0.5)
+```
+
+Here the original bounding box is shown in red and the cells that partially overlap are not cropped.
+
+We can also only keep cells covered by (i.e. entirely within) the bounding box
+
+```{r}
+sfe_cropped3 <- crop(sfe_vizgen, bbox_use, colGeometryName = "cellSeg",
+                     keep_whole = "col", cover = TRUE)
+```
+
+```{r}
+plot_sfe_vizgen(sfe_cropped3)
+```
+
+We can also use a geometry to remove a part of the data by specifying `op = st_difference`; `keep_whole` and `cover` still apply.
+
+```{r}
+sfe_hole <- crop(sfe_vizgen, bbox_use, colGeometryName = "cellSeg", 
+                 op = st_difference)
+```
+
+```{r}
+plot_sfe_vizgen(sfe_hole)
+```
+
+### Transformation
+
+We can rotate (right now only multiples of 90 degrees), mirror, transpose, and translate the SFE object, such as when there's a canonical orientation like in brain sections but the data is of a different orientation when read in. Here all geometries and images are transformed while keeping them aligned.
+
+```{r}
+sfe_mirror <- mirror(sfe_vizgen, direction = "vertical")
+```
+
+```{r}
+plot_sfe_vizgen(sfe_mirror)
+```
+
+Individual images can be transformed say in case it doesn't initially align with the geometries, though for this dataset, this will put the image out of alignment
+```{r}
+sfe_img <- mirrorImg(sfe_vizgen, image_id = "DAPI_z3")
+```
+
+```{r}
+plot_sfe_vizgen(sfe_img)
+```
+
+## Multiple samples
+Thus far, the example dataset used only has one sample. The `SpatialExperiment` (SPE) object has a special column in `colData` called `sample_id`, so data from multiple tissue sections can coexist in the same SPE object for joint dimension reduction and clustering while keeping the spatial coordinates separate. It's important to keep spatial coordinates of different tissue sections separate because first, the coordinates would only make sense within the same section, and second, the coordinates from different sections can have overlapping numeric values. 
+
+SFE inherits from SPE, and with geometries and spatial graphs, `sample_id` is even more important. The geometry and graph getter and setter functions have a `sample_id` argument, which is optional when only one sample is present in the SFE object. This argument is mandatory if multiple samples are present, and can be a character vector for multiple samples or "all" for all samples. Below are examples of using the getters and setters for multiple samples.
+
+```{r}
+# Construct toy dataset with 2 samples
+sfe1 <- McKellarMuscleData(dataset = "small")
+sfe2 <- McKellarMuscleData(dataset = "small2")
+spotPoly(sfe2)$sample_id <- "sample02"
+(sfe_combined <- cbind(sfe1, sfe2))
+```
+
+Use the `sampleIDs` function to see the names of all samples
+```{r}
+sampleIDs(sfe_combined)
+```
+
+```{r}
+# Only get the geometries for the second sample
+(spots2 <- colGeometry(sfe_combined, "spotPoly", sample_id = "sample02"))
+```
+
+```{r}
+# Only set the geometries for the second sample
+# Leaving geometries of the first sample intact
+colGeometry(sfe_combined, "spotPoly", sample_id = "sample02") <- spots2
+```
+
+```{r}
+# Set graph only for the second sample
+colGraph(sfe_combined, "foo", sample_id = "sample02") <- 
+  findSpatialNeighbors(sfe_combined, sample_id = "sample02")
+```
+
+```{r}
+# Get graph only for the second sample
+colGraph(sfe_combined, "foo", sample_id = "sample02")
+```
+
+```{r}
+# Set graph of the same name for both samples
+# The graphs are computed separately for each sample
+colGraphs(sfe_combined, sample_id = "all", name = "visium") <- 
+  findVisiumGraph(sfe_combined, sample_id = "all")
+```
+
+```{r}
+# Get multiple graphs of the same name
+colGraphs(sfe_combined, sample_id = "all", name = "visium")
+```
+
+```{r}
+# Or just all graphs of the margin
+colGraphs(sfe_combined, sample_id = "all")
+```
+
+Sample IDs can also be changed, with the `changeSampleIDs()` function, with a named vector whose names are the old names and values are the new names.
+```{r}
+sfe_combined <- changeSampleIDs(sfe_combined, 
+                                replacement = c(Vis5A = "foo", sample02 = "bar"))
+sfe_combined
+```
+
+Basically, all the functions covered above have an argument `sample_id` if the operation is not to be performed on all samples. Or set `sample_id = "all"` to perform on all samples.
+```{r}
+sampleIDs(sfe_combined)
+```
+
+```{r}
+bbox(sfe_combined, sample_id = "all")
+```
+
+```{r}
+bbox(sfe_combined, sample_id = "foo")
+```
+
+## Future directions
+See the [GitHub issues](https://github.com/pachterlab/SpatialFeatureExperiment/issues)
+
+## Session info
 ```{r}
 sessionInfo()
 ```
-
