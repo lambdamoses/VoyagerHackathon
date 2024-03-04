@@ -6853,40 +6853,40 @@ annotation geometries and spatial graphs differ.</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">pca_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/pkg/SingleCellExperiment/man/reducedDims.html" class="external-link">reducedDim</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, <span class="st">"PCA"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="va">pca_res</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                         PC1        PC2         PC3        PC4        PC5</span></span>
-<span><span class="co">#&gt; AAATTACCTATCGATG -1.3377315 -0.6272455 -1.89418096  0.4281142  1.6679033</span></span>
-<span><span class="co">#&gt; AACATATCAACTGGTG -0.9176196 -1.7446527 -1.17466111  0.1101124 -0.8328961</span></span>
-<span><span class="co">#&gt; AAGATTGGCGGAACGT  0.3127939 -2.3381292  1.55334449 -2.0582206  3.1237670</span></span>
-<span><span class="co">#&gt; AAGGGACAGATTCTGT -1.1454887 -1.6483366 -1.34405438  0.6489710  2.0769778</span></span>
-<span><span class="co">#&gt; AATATCGAGGGTTCTC -1.6871434 -1.3772805 -2.99001101  0.7206788  1.4824973</span></span>
-<span><span class="co">#&gt; AATGATGATACGCTAT -0.9398691 -0.3118155  0.02960312 -0.7916621  0.9375853</span></span>
-<span><span class="co">#&gt;                         PC6        PC7        PC8        PC9       PC10</span></span>
-<span><span class="co">#&gt; AAATTACCTATCGATG  1.7815613 -0.3881873 -2.8266465 -4.1393556 -1.5506861</span></span>
-<span><span class="co">#&gt; AACATATCAACTGGTG -0.3579236 -3.1559300 -0.2434049 -0.5127298 -0.3360982</span></span>
-<span><span class="co">#&gt; AAGATTGGCGGAACGT  3.9268637 -2.4060020 -1.2217007 -3.1234996  1.3912786</span></span>
-<span><span class="co">#&gt; AAGGGACAGATTCTGT  0.5549159 -2.4213310 -1.5162314 -0.6479754 -0.6835679</span></span>
-<span><span class="co">#&gt; AATATCGAGGGTTCTC  0.3287834 -6.1201618  5.0054816  4.9051787  3.9947206</span></span>
-<span><span class="co">#&gt; AATGATGATACGCTAT -0.7241128 -1.7345248  1.0288884  1.2416471 -1.3318128</span></span></code></pre></div>
+<span><span class="co">#&gt;                         PC1       PC2         PC3        PC4        PC5</span></span>
+<span><span class="co">#&gt; AAATTACCTATCGATG -1.3377315 0.6272455 -1.89418096  0.4281142  1.6679033</span></span>
+<span><span class="co">#&gt; AACATATCAACTGGTG -0.9176196 1.7446527 -1.17466111  0.1101124 -0.8328961</span></span>
+<span><span class="co">#&gt; AAGATTGGCGGAACGT  0.3127939 2.3381292  1.55334449 -2.0582206  3.1237670</span></span>
+<span><span class="co">#&gt; AAGGGACAGATTCTGT -1.1454887 1.6483366 -1.34405438  0.6489710  2.0769778</span></span>
+<span><span class="co">#&gt; AATATCGAGGGTTCTC -1.6871434 1.3772805 -2.99001101  0.7206788  1.4824973</span></span>
+<span><span class="co">#&gt; AATGATGATACGCTAT -0.9398691 0.3118155  0.02960312 -0.7916621  0.9375853</span></span>
+<span><span class="co">#&gt;                         PC6       PC7        PC8        PC9       PC10</span></span>
+<span><span class="co">#&gt; AAATTACCTATCGATG -1.7815613 0.3881873 -2.8266465 -4.1393556  1.5506994</span></span>
+<span><span class="co">#&gt; AACATATCAACTGGTG  0.3579236 3.1559300 -0.2434049 -0.5127298  0.3360531</span></span>
+<span><span class="co">#&gt; AAGATTGGCGGAACGT -3.9268637 2.4060020 -1.2217007 -3.1234996 -1.3911600</span></span>
+<span><span class="co">#&gt; AAGGGACAGATTCTGT -0.5549159 2.4213310 -1.5162314 -0.6479754  0.6834811</span></span>
+<span><span class="co">#&gt; AATATCGAGGGTTCTC -0.3287834 6.1201618  5.0054816  4.9051787 -3.9946236</span></span>
+<span><span class="co">#&gt; AATGATGATACGCTAT  0.7241128 1.7345248  1.0288884  1.2416471  1.3317833</span></span></code></pre></div>
 <p>Here the second argument is used to specify which dimension reduction
 result to get. If it’s not specified, then by default the first one is
 retrieved, so the code below would be equivalent to the previous
 chunk:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/pkg/SingleCellExperiment/man/reducedDims.html" class="external-link">reducedDim</a></span><span class="op">(</span><span class="va">sfe_tissue</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rspatial.github.io/terra/reference/headtail.html" class="external-link">head</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="co">#&gt;                         PC1        PC2         PC3        PC4        PC5</span></span>
-<span><span class="co">#&gt; AAATTACCTATCGATG -1.3377315 -0.6272455 -1.89418096  0.4281142  1.6679033</span></span>
-<span><span class="co">#&gt; AACATATCAACTGGTG -0.9176196 -1.7446527 -1.17466111  0.1101124 -0.8328961</span></span>
-<span><span class="co">#&gt; AAGATTGGCGGAACGT  0.3127939 -2.3381292  1.55334449 -2.0582206  3.1237670</span></span>
-<span><span class="co">#&gt; AAGGGACAGATTCTGT -1.1454887 -1.6483366 -1.34405438  0.6489710  2.0769778</span></span>
-<span><span class="co">#&gt; AATATCGAGGGTTCTC -1.6871434 -1.3772805 -2.99001101  0.7206788  1.4824973</span></span>
-<span><span class="co">#&gt; AATGATGATACGCTAT -0.9398691 -0.3118155  0.02960312 -0.7916621  0.9375853</span></span>
-<span><span class="co">#&gt;                         PC6        PC7        PC8        PC9       PC10</span></span>
-<span><span class="co">#&gt; AAATTACCTATCGATG  1.7815613 -0.3881873 -2.8266465 -4.1393556 -1.5506861</span></span>
-<span><span class="co">#&gt; AACATATCAACTGGTG -0.3579236 -3.1559300 -0.2434049 -0.5127298 -0.3360982</span></span>
-<span><span class="co">#&gt; AAGATTGGCGGAACGT  3.9268637 -2.4060020 -1.2217007 -3.1234996  1.3912786</span></span>
-<span><span class="co">#&gt; AAGGGACAGATTCTGT  0.5549159 -2.4213310 -1.5162314 -0.6479754 -0.6835679</span></span>
-<span><span class="co">#&gt; AATATCGAGGGTTCTC  0.3287834 -6.1201618  5.0054816  4.9051787  3.9947206</span></span>
-<span><span class="co">#&gt; AATGATGATACGCTAT -0.7241128 -1.7345248  1.0288884  1.2416471 -1.3318128</span></span></code></pre></div>
+<span><span class="co">#&gt;                         PC1       PC2         PC3        PC4        PC5</span></span>
+<span><span class="co">#&gt; AAATTACCTATCGATG -1.3377315 0.6272455 -1.89418096  0.4281142  1.6679033</span></span>
+<span><span class="co">#&gt; AACATATCAACTGGTG -0.9176196 1.7446527 -1.17466111  0.1101124 -0.8328961</span></span>
+<span><span class="co">#&gt; AAGATTGGCGGAACGT  0.3127939 2.3381292  1.55334449 -2.0582206  3.1237670</span></span>
+<span><span class="co">#&gt; AAGGGACAGATTCTGT -1.1454887 1.6483366 -1.34405438  0.6489710  2.0769778</span></span>
+<span><span class="co">#&gt; AATATCGAGGGTTCTC -1.6871434 1.3772805 -2.99001101  0.7206788  1.4824973</span></span>
+<span><span class="co">#&gt; AATGATGATACGCTAT -0.9398691 0.3118155  0.02960312 -0.7916621  0.9375853</span></span>
+<span><span class="co">#&gt;                         PC6       PC7        PC8        PC9       PC10</span></span>
+<span><span class="co">#&gt; AAATTACCTATCGATG -1.7815613 0.3881873 -2.8266465 -4.1393556  1.5506994</span></span>
+<span><span class="co">#&gt; AACATATCAACTGGTG  0.3579236 3.1559300 -0.2434049 -0.5127298  0.3360531</span></span>
+<span><span class="co">#&gt; AAGATTGGCGGAACGT -3.9268637 2.4060020 -1.2217007 -3.1234996 -1.3911600</span></span>
+<span><span class="co">#&gt; AAGGGACAGATTCTGT -0.5549159 2.4213310 -1.5162314 -0.6479754  0.6834811</span></span>
+<span><span class="co">#&gt; AATATCGAGGGTTCTC -0.3287834 6.1201618  5.0054816  4.9051787 -3.9946236</span></span>
+<span><span class="co">#&gt; AATGATGATACGCTAT  0.7241128 1.7345248  1.0288884  1.2416471  1.3317833</span></span></code></pre></div>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Set PCA embeddings say if you ran PCA elsewhere</span></span>
 <span><span class="fu"><a href="https://rdrr.io/pkg/SingleCellExperiment/man/reducedDims.html" class="external-link">reducedDim</a></span><span class="op">(</span><span class="va">sfe_tissue</span>, <span class="st">"PCA"</span><span class="op">)</span> <span class="op">&lt;-</span> <span class="va">pca_res</span></span></code></pre></div>
